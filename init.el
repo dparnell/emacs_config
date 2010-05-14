@@ -1,5 +1,10 @@
 ;; MuMaMo-Mode for rhtml files
-(add-to-list 'load-path "~/.emacs.d/nxhtml/util")
+
+(if (< emacs-major-version 23)
+      (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
+
+(load "~/.emacs.d/nxhtml/autostart.el")
+;; (add-to-list 'load-path "~/.emacs.d/nxhtml/util")
 (require 'mumamo-fun)
 (setq mumamo-chunk-coloring 'submode-colored)
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
