@@ -8,3 +8,12 @@
 ;; load rails-reloaded
 (setq load-path (cons (expand-file-name "~/.emacs.d/rails-reloaded") load-path))
 (require 'rails-autoload)
+
+
+(rails/defbundle "Lib"
+  ()
+
+  (rails/defresource 'libs "Libs"
+                     :dir "lib"
+                     :file-ext  "*")
+)
