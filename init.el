@@ -4,8 +4,8 @@
 
 ;; MuMaMo-Mode for rhtml files
 (load "~/.emacs.d/nxhtml/autostart.el")
-;;(add-to-list 'load-path "~/.emacs.d/nxhtml/util")
-;;(require 'mumamo-fun)
+(add-to-list 'load-path "~/.emacs.d/nxhtml/util")
+(require 'mumamo-fun)
 (setq mumamo-chunk-coloring 'submode-colored)
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
