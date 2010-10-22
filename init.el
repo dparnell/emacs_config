@@ -2,6 +2,12 @@
 (if (< emacs-major-version 23)
       (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
+(setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
+
+;; Magit
+(setq load-path (append load-path '("~/.emacs.d/magit")))
+(require 'magit)
+
 ;; MuMaMo-Mode for rhtml files
 (load "~/.emacs.d/nxhtml/autostart.el")
 (add-to-list 'load-path "~/.emacs.d/nxhtml/util")
