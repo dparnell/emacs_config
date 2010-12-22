@@ -4,6 +4,10 @@
 
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
+;; Use spaces instead of TABs
+(setq indent-tabs-mode nil)
+(setq c-indent-level 2)
+
 ;; Magit
 (setq load-path (append load-path '("~/.emacs.d/magit")))
 (require 'magit)
@@ -37,3 +41,7 @@
 (add-to-list 'load-path "~/.emacs.d/ensime_2.8.0-0.2.4/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+;; rspec
+(setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
+(require 'rspec-mode)
