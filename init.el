@@ -50,3 +50,9 @@
 (setq display-time-day-and-date t
       display-time-24hr-format t)
 (display-time)
+
+;; gforth
+(setq load-path (append load-path '("~/.emacs.d/gforth")))
+(autoload 'forth-mode "gforth.el")
+(autoload 'forth-block-mode "gforth.el")
+(add-to-list 'auto-mode-alist '("\\.fs$" . forth-mode))
