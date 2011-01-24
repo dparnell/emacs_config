@@ -56,3 +56,8 @@
 (autoload 'forth-mode "gforth.el")
 (autoload 'forth-block-mode "gforth.el")
 (add-to-list 'auto-mode-alist '("\\.fs$" . forth-mode))
+
+;; start the emacs server
+(server-start)
+;; get rid of the message about buffers still having clients when closing a file
+(remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
