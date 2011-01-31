@@ -57,6 +57,10 @@
 (autoload 'forth-block-mode "gforth.el")
 (add-to-list 'auto-mode-alist '("\\.fs$" . forth-mode))
 
+;; actionscript mode
+(autoload 'actionscript-mode "~/.emacs.d/actionscript-mode.el")
+(add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
+
 ;; start the emacs server
 (server-start)
 ;; get rid of the message about buffers still having clients when closing a file
