@@ -58,6 +58,8 @@
 (add-to-list 'auto-mode-alist '("\\.fs$" . forth-mode))
 
 ;; start the emacs server
+(setq server-socket-dir "~/.emacs.d/server")
 (server-start)
+
 ;; get rid of the message about buffers still having clients when closing a file
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
