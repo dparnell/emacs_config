@@ -102,14 +102,6 @@
 (rails/setup-auto-coding-alist)
 
 ;;; ---------------------------------------------------------
-;;; - Mumamo fixes
-;;;
-(eval-after-load 'mumamo
-  '(progn
-;;     (add-to-list 'mumamo-survive 'rails-minor-mode)
-     (put 'rails/current-buffer 'permanent-local t)))
-
-;;; ---------------------------------------------------------
 ;;; - snippets
 ;;;
 (when (fboundp 'yas/minor-mode)
@@ -118,5 +110,14 @@
          (file-name-directory (locate-library "rails-reloaded"))
          "snippets")))
     (yas/load-directory dir)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Mumamo fixes
+;;
+(eval-after-load 'mumamo
+  '(progn
+     ;; (add-to-list 'mumamo-survive 'rails-minor-mode)
+     (put 'rails-minor-mode 'permanent-local t)
+     (put 'rails/current-buffer 'permanent-local t)))
 
 (provide 'rails-autoload)

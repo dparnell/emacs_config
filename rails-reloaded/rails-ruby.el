@@ -37,6 +37,23 @@
         (setq action (buffer-substring-no-properties (match-beginning 1) (match-end 1)))))
     action))
 
+(defun rails/ruby/current-test-method ()
+  (let ((action (rails/ruby/current-method))
+	(re "^[[:space:]]*test[[:space:]]+\\('\\|\"\\)\\([^\\1]+\\)\\1[[:space:]]+do[[:space:]]*$"))
+    (unless action
+      (save-excursion
+	(end-of-line)
+	(when (re-search-backward re nil t)
+          (setq action
+		(concat "test_"
+			(replace-regexp-in-string
+                         "[[:space:]]"
+                         "_"
+                         (buffer-substring-no-properties
+                          (match-beginning 2)
+                          (match-end 2)))))))
+      action)))
+
 (defun rails/ruby/goto-method-in-current-buffer (action)
     (let* (pos
            (cur-pos (point))
@@ -58,20 +75,31 @@
   "Run CMD as a ruby process in BUF if BUF does not exist."
   (let ((abuf (concat "*" buf "*")))
     (when (not (comint-check-proc abuf))
-      (set-buffer (make-comint buf rails/ruby/command nil script params)))
-    (inferior-ruby-mode)
-    (make-local-variable 'inferior-ruby-first-prompt-pattern)
-    (make-local-variable 'inferior-ruby-prompt-pattern)
-    (setq inferior-ruby-first-prompt-pattern "^>> "
-          inferior-ruby-prompt-pattern "^>> ")
-    (setq ruby-buffer abuf)
-    (rails-minor-mode t)
+      (set-buffer (make-comint buf rails/ruby/command nil script params))
+      (inferior-ruby-mode)
+      (setq inf-ruby-buffer abuf)
+      (make-local-variable 'inferior-ruby-first-prompt-pattern)
+      (make-local-variable 'inferior-ruby-prompt-pattern)
+      (setq inf-ruby-first-prompt-pattern "^.*> "
+            inf-ruby-prompt-pattern "^.*> ")
+      (setq ruby-buffer abuf)
+      (rails-minor-mode t))
     (pop-to-buffer abuf)))
+
+(defun rails/rails3-project-p()
+  (when-bind (root (rails/root))
+	     (in-directory root
+			   (file-exists-p "script/rails"))))
+
+(defun rails/script-name (script)
+  (if (rails/rails3-project-p)
+      (concat "rails " script)
+    (concat "script/" script)))
 
 (defun rails/console ()
   (interactive)
   (when-bind (root (rails/root))
     (in-directory root
-      (rails/ruby/run-in-buffer "ruby" "script/console" rails/default-environment))))
+      (rails/ruby/run-in-buffer "ruby" (rails/script-name "console") rails/default-environment))))
 
 (provide 'rails-ruby)

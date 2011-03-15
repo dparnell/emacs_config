@@ -41,8 +41,13 @@
       (if (= 1 (length items))
           (setq file (car items))
         (setq file
-              (ido-completing-read "Select view: "
-                                   items)))
+	      ;; (completing-read prompt collection &optional
+	      ;; predicate require-match initial-input hist def
+	      ;; inherit-input-method)
+
+	      ;; (ido-completing-read prompt choices &optional
+	      ;; predicate require-match initial-input hist def)
+              (completing-read "Select view: " items)))
       (find-file (concat dir file))
       (rails/resources/notify-item
        nil
@@ -58,6 +63,16 @@
                      :file-ext  "rb"
                      :file-suffix "_controller")
 
+  (rails/defresource 'cell "Cell"
+                     :dir "app/cells"
+		             :file-pattern "{name}/.*"
+		             :options 'expand-in-menu
+		             :weight 2)
+  
+  (rails/defresource 'feature "Feature"
+                     :dir "features"
+                     :file-ext "feature")
+    
   (rails/defresource 'mailer "Mailer"
                      :dir "app/models"
                      :file-ext  "rb"
@@ -101,4 +116,8 @@
   (rails/defresource 'javascript "Javascript"
                      :dir "public/javascripts"
                      :file-ext  "js")
+
+  (rails/defresource 'lib "Library"
+		             :dir "lib"
+		             :file-ext "rb")
  )

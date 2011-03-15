@@ -60,6 +60,19 @@ can find them in the brackets.
   [C-c up] to toggle (controller|mailer) <> view.
   [C-c t] to toggle test <> implementation.
 
+  NEW NAVIGATION FEATURE:
+  Press:
+
+  [C-c m] to display model list
+  [C-c g] to display migration list
+  [C-c c] to display controller list 
+  [C-c v] to display view list
+  [C-c l] to display cell list
+  [C-c j] to display javascript list
+  [C-c s] to display css styles list
+  [C-c b] to display library list
+  [C-c f] to display cucumber features list
+
 * Support test frameworks Test::Unit and RSpec, press [C-c C-c .] or
   [C-c C-c ,] to run current test.
 

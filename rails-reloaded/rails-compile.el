@@ -62,16 +62,26 @@
 
 (defun rails/compile/error-regexp-alist ()
   (list
-   (list 'rails/compile/error 'rails/compile/match-error 1 2 nil 2 1)))
+   (list 'rails/compile/error
+	 (concat "\\(?:\\[\\|^\\|\\s+\\|(\\)?"
+		 ;; rails framefork files should be a 'info'
+		 "\\(\\([^ :\n\]+vendor/rails[^ :\n\]+\\)\\|"
+		 ;; all files from vendor/ (plugins and etc) should be
+		 ;; a 'warning'
+		 "\\([^ :\n\]+vendor/[^ :\n\]+\\)\\|"
+		 ;; all other is 'error'
+		 "[^ :\n\]+\\)"
+		 ":\\([0-9]+\\)+\\b")
+	 1 4 nil '(3 . 2) 1)))
 
 
-(define-derived-mode rails/compilation-mode compilation-mode "RCompile"
+(define-derived-mode rails/compilation-mode comint-mode "RCompile"
   "Major mode for RoR tests."
   (set (make-local-variable 'font-lock-keywords-only) t)
   (set (make-local-variable 'font-lock-keywords) nil)
-;;  (set (make-local-variable 'font-lock-defaults) nil) ; to enable fontify by ansi-color
-;;   (set (make-local-variable 'font-lock-defaults)
-;;        '(rails/compile/font-lock-keywords t))
+  ;; (set (make-local-variable 'font-lock-defaults) nil) ; to enable fontify by ansi-color
+  ;; (set (make-local-variable 'font-lock-defaults)
+  ;;      '(rails/compile/font-lock-keywords t))
   (set (make-local-variable 'compilation-mode-font-lock-keywords)
        rails/compile/font-lock-keywords)
   (set (make-local-variable 'compilation-error-regexp-alist-alist)
@@ -82,51 +92,51 @@
 (defun rails/compile/run (root command args)
   (rails/runner/run root command args :mode 'rails/compilation-mode)
   (setq rails/runner/after-stop-func-list
-        '(rails/runner/popup-buffer-if-failed)))
+	'(rails/runner/popup-buffer-if-failed)))
 
 (defun rails/compile/run-file (root rails-buffer command args-pattern &optional file-pattern)
   (let* ((item
-          (when rails-buffer
-            (rails/resources/get-associated-test-item-for-buffer
-             root
-             rails-buffer)))
-         (match (when file-pattern
-                  (string-ext/string=~ file-pattern
-                                       (or
-                                        (when item (rails/resource-item-file item))
-                                        (rails/resource-buffer-file rails-buffer))
-                                      t)))
-        file)
+	  (when rails-buffer
+	    (rails/resources/get-associated-test-item-for-buffer
+	     root
+	     rails-buffer)))
+	 (match (when file-pattern
+		  (string-ext/string=~ file-pattern
+				       (or
+					(when item (rails/resource-item-file item))
+					(rails/resource-buffer-file rails-buffer))
+				       t)))
+	 file)
     (cond
      ((and item (if file-pattern match t))
       (setq file (rails/resource-item-file item))
       (rails/compile/run root
-                         command
-                         (format args-pattern
-                                 file)))
+			 command
+			 (format args-pattern
+				 file)))
      ((and file-pattern
-           match)
+	   match)
       (rails/compile/run root
-                         command
-                         (format args-pattern
-                                 (rails/cut-root (buffer-file-name)))))
+			 command
+			 (format args-pattern
+				 (rails/cut-root (buffer-file-name)))))
      (t
       (rails/notify "Can't run current file as a test." :error)))))
 
 (defun rails/compile/single-file ()
   (interactive)
   (when-bind (root (rails/root))
-   (loop for func in rails/compile/single-file-list
-         for res = (funcall func root rails/current-buffer)
-         when res
-         do (return res))))
+	     (loop for func in rails/compile/single-file-list
+		   for res = (funcall func root rails/current-buffer)
+		   when res
+		   do (return res))))
 
 (defun rails/compile/current-method ()
   (interactive)
   (when-bind (root (rails/root))
-   (loop for func in rails/compile/current-method-list
-         for res = (funcall func root rails/current-buffer)
-         when res
-         do (return res))))
+	     (loop for func in rails/compile/current-method-list
+		   for res = (funcall func root rails/current-buffer)
+		   when res
+		   do (return res))))
 
 (provide 'rails-compile)

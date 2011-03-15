@@ -39,9 +39,9 @@ not exist."
      (unless (boundp ',key-map)
        (setf ,key-map (make-keymap)))
      ,@(mapcar
-        #'(lambda (key-func)
-            `(define-key ,key-map ,(first key-func) ,(second key-func)))
-        key-funcs)
+	#'(lambda (key-func)
+	    `(define-key ,key-map ,(first key-func) ,(second key-func)))
+	key-funcs)
      ,key-map))
 
 (defmacro funcs-chain (&rest list-of-funcs)
@@ -53,5 +53,44 @@ not exist."
 (defmacro in-directory (dir &rest body)
   `(let ((default-directory ,dir))
      ,@body))
+
+(dont-compile
+  (when (and (featurep 'ert)
+	     (featurep 'el-mock))
+
+    (ert-deftest rails/core-ext/test/when-bind-with-function ()
+      (mocklet (((foo 'var) => 'passed)
+		((bar) => 'var))
+	       (should (equal 'passed
+			      (when-bind (var (bar))
+					 (foo var))))))
+
+    (ert-deftest rails/core-ext/test/when-bind-with-variable-passed ()
+      (mocklet (((foo 'bar) => 'passed))
+	       (should (equal 'passed
+			      (when-bind (var 'bar)
+					 (foo var))))))
+
+    (ert-deftest rails/core-ext/test/when-bind-with-block-skipped ()
+      (should-error
+       (mocklet (((foo) => 'passed))
+		(when-bind (var nil)
+			   (foo)))))
+
+    (ert-deftest rails/core-ext/test/define-keys-with-return-valid-keymap ()
+      (should (consp (define-keys-test-map))))
+
+    (ert-deftest rails/core-ext/test/define-keys-with-setup-valid-keys ()
+      (let ((map (define-keys-test-map)))
+	(should (eq 'foo (lookup-key map "\C-c a")))
+	(should (eq 'bar (lookup-key map "\C-c b")))))
+
+    (ert-deftest rails/core-ext/test/funcs-chain ()
+      (should (equal "A"
+		     (funcall (funcs-chain
+			       capitalize
+			       string-to-list
+			       car
+			       char-to-string) "abcd"))))))
 
 (provide 'core-ext)

@@ -98,4 +98,36 @@
           (setq cur-dir (car dir-stack)))))
     res))
 
+(dont-compile
+  (when (featurep 'ert)
+
+  (deftest rails/files-ext/test/file-special-p ()
+    (should (files-ext/file-special-p "."))
+    (should (files-ext/file-special-p ".."))
+    (should (files-ext/file-special-p "#foo.bar"))
+    (should (files-ext/file-special-p "~foo.bar"))
+    (should (not (files-ext/file-special-p "foo.bar"))))
+
+  (deftest rails/files-ext/test/file-in-directory-p ()
+    (should (files-ext/file-in-directory-p
+	       "/Users/dima/"
+	       "/Users/dima/foo.bar"))
+    (should (files-ext/file-in-directory-p
+	       "../"  "./foo"))
+    (should (files-ext/file-in-directory-p
+	       "../"  "../foo"))
+    (should-not (files-ext/file-in-directory-p
+		  "../"  "../../foo")))
+
+  (deftest rails/files-ext/test/file-in-directories-p ()
+    (should (equal "/Users/dima/"
+		   (files-ext/file-in-directories-p '("/Users/dima/" "/Users/joe/")
+						    "/Users/dima/foo.bar")))
+    (should (equal "../"
+		   (files-ext/file-in-directories-p '("../" "/tmp")   "./foo")))
+    (should (equal "../"
+		   (files-ext/file-in-directories-p '("/tmp" "../" )  "../foo")))
+    (should-not  (files-ext/file-in-directories-p
+		  '("../" "/tmp")  "../../foo")))))
+
 (provide 'files-ext)

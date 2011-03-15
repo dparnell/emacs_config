@@ -48,7 +48,7 @@
                   env)))
    (t
     (cons rails/ruby/command
-          (format "script/server %s -b %s -p %s -e %s"
+          (format (rails/script-name "server %s -b %s -p %s -e %s")
                   type
                   addr
                   port

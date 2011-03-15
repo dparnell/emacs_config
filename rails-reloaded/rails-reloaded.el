@@ -150,6 +150,42 @@
   (interactive)
   (rails/anything/goto resource-type))
 
+(defun rails/goto-model ()
+  (interactive)
+  (rails/anything/goto 'model))
+
+(defun rails/goto-controller ()
+  (interactive)
+  (rails/anything/goto 'controller))
+
+(defun rails/goto-feature ()
+  (interactive)
+  (rails/anything/goto 'feature))
+
+(defun rails/goto-migration ()
+  (interactive)
+  (rails/anything/goto 'migration))
+
+(defun rails/goto-view ()
+  (interactive)
+  (rails/anything/goto 'view))
+
+(defun rails/goto-cell ()
+  (interactive)
+  (rails/anything/goto 'cell))
+
+(defun rails/goto-javascript ()
+  (interactive)
+  (rails/anything/goto 'javascript))
+
+(defun rails/goto-stylesheet ()
+  (interactive)
+  (rails/anything/goto 'stylesheet))
+
+(defun rails/goto-lib ()
+  (interactive)
+  (rails/anything/goto 'lib))
+
 (defun rails/goto-associated ()
   (interactive)
   (rails/anything/associated))
@@ -218,6 +254,15 @@
       ((rails/short-key "'")        'rails/goto-associated)
       ((rails/short-key ";")        'rails/goto)
       ((rails/short-key "/")        'rails/runner/toggle-output-window)
+      ((rails/short-key "m")        'rails/goto-model)
+      ((rails/short-key "f")        'rails/goto-feature)
+      ((rails/short-key "g")        'rails/goto-migration)
+      ((rails/short-key "c")        'rails/goto-controller)
+      ((rails/short-key "v")        'rails/goto-view)
+      ((rails/short-key "l")        'rails/goto-cell)
+      ((rails/short-key "j")        'rails/goto-javascript)
+      ((rails/short-key "s")        'rails/goto-stylesheet)
+      ((rails/short-key "b")        'rails/goto-lib)
       ((kbd "\e\e e")               'rails/set-default-environment)
       ((rails/key ".")              'rails/compile/single-file)
       ((rails/key ",")              'rails/compile/current-method))

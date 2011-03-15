@@ -97,4 +97,18 @@
                      :file-pattern "{name}/.*"
                      :file-ext  "rb"
                      :options 'expand-in-menu
-                     :test-to 'view ))
+                     :test-to 'view )
+
+  (rails/defresource 'integration-spec "RSpec Integration"
+                     :group 'spec
+                     :dir "spec/integration"
+                     :file-suffix  "_spec"
+                     :file-ext  "rb")
+
+  (rails/defresource 'lib-spec "RSpec Lib"
+                     :group 'spec
+                     :dir "spec/lib"
+                     :file-suffix  "_spec"
+                     :file-pattern "{name}/.*"
+                     :file-ext  "rb"
+                     :test-to 'lib ))

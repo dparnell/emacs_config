@@ -70,8 +70,8 @@
     (rails/runner/run root
                       rails/rake-bundle/command
                       (if args
-                          (format "RAILS_ENV=%s %s %s" rails/default-environment task args )
-                        (format "RAILS_ENV=%s %s" rails/default-environment task))
+                          (format "%s %s" task args )
+                        (format "%s" task))
                       :keywords keywords)
     (with-current-buffer rails/runner/buffer-name
       (set (make-local-variable 'rails/rake-bundle/task-name) task))
@@ -143,57 +143,57 @@
   "Run a Rake task."
   (interactive)
   (rails/with-root nil
-    (if task
-        (when (not (string-ext/empty-p task))
-          (rails/rake-bundle/task-run (rails/root) task))
-      (rails/rake-bundle/list-tasks))))
+                   (if task
+                       (when (not (string-ext/empty-p task))
+                         (rails/rake-bundle/task-run (rails/root) task))
+                     (rails/rake-bundle/list-tasks))))
 
 (defun rails/rake-bundle/run-with-args (&optional task)
   "Run a Rake task with arguments ARGS."
   (interactive)
   (rails/with-root nil
-    (if task
-        (when (not (string-ext/empty-p task))
-          (let ((args (read-string (format "Arguments fo %s: " task))))
-            (rails/rake-bundle/task-run (rails/root) task args)))
-      (rails/rake-bundle/list-tasks))))
+                   (if task
+                       (when (not (string-ext/empty-p task))
+                         (let ((args (read-string (format "Arguments fo %s: " task))))
+                           (rails/rake-bundle/task-run (rails/root) task args)))
+                     (rails/rake-bundle/list-tasks))))
 
 (defun rails/rake-bundle/reset-cache ()
   "Reset tasks cache."
   (interactive)
   (rails/with-root nil
-    (rails/rake-bundle/create-tasks-cache (rails/root))))
+                   (rails/rake-bundle/create-tasks-cache (rails/root))))
 
 (defun rails/rake-bundle/list-tasks ()
   "List of availabled Rake tasks."
   (interactive)
   (rails/with-root nil
-    (rails/anything/run-with-pattern "rake ")))
+                   (rails/anything/run-with-pattern "rake ")))
 
 ;;; ---------------------------------------------------------
 ;;; - Bundle
 ;;;
 
 (rails/defbundle "Rake"
-  (:menu
-   (([reset]     (cons "Reset Tasks Cache" 'rails/rake-bundle/reset-cache))
-    ([task]      (cons "Run Rake Task" 'rails/rake-bundle/list-tasks)))
-   :keys
-   (("r"    'rails/rake-bundle/list-tasks))
-   :triggers
-   (("rake" "Rake Task"
-     (candidates
-      .
-      (lambda ()
-        (when (string-match "^rake" anything-pattern)
-          (mapcar
-           (lambda (i) (cons (format "rake %s %s"
-                                (car i)
-                                (propertize (cdr i) 'face font-lock-comment-face))
-                        (car i)))
-           (rails/rake-bundle/alist-of-tasks anything-rails-current-root)))))
-     (action ("Run" . (lambda (i) (rails/rake-bundle/run i)))
-             ("Run with Arguments" . (lambda (i) (rails/rake-bundle/run-with-args i))))
-     (requires-pattern . 4))))
+                 (:menu
+                  (([reset]     (cons "Reset Tasks Cache" 'rails/rake-bundle/reset-cache))
+                   ([task]      (cons "Run Rake Task" 'rails/rake-bundle/list-tasks)))
+                  :keys
+                  (("r"    'rails/rake-bundle/list-tasks))
+                  :triggers
+                  (("rake" "Rake Task"
+                    (candidates
+                     .
+                     (lambda ()
+                       (when (string-match "^rake" anything-pattern)
+                         (mapcar
+                          (lambda (i) (cons (format "rake %s %s"
+                                                    (car i)
+                                                    (propertize (cdr i) 'face font-lock-comment-face))
+                                            (car i)))
+                          (rails/rake-bundle/alist-of-tasks anything-rails-current-root)))))
+                    (action ("Run" . (lambda (i) (rails/rake-bundle/run i)))
+                            ("Run with Arguments" . (lambda (i) (rails/rake-bundle/run-with-args i))))
+                    (requires-pattern . 4))))
 
-  (setq rails/rake-bundle/tasks-runners-alist nil))
+                 (setq rails/rake-bundle/tasks-runners-alist nil))
