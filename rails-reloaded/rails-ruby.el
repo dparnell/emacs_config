@@ -86,20 +86,10 @@
       (rails-minor-mode t))
     (pop-to-buffer abuf)))
 
-(defun rails/rails3-project-p()
-  (when-bind (root (rails/root))
-	     (in-directory root
-			   (file-exists-p "script/rails"))))
-
-(defun rails/script-name (script)
-  (if (rails/rails3-project-p)
-      (concat "rails " script)
-    (concat "script/" script)))
-
 (defun rails/console ()
   (interactive)
   (when-bind (root (rails/root))
     (in-directory root
-      (rails/ruby/run-in-buffer "ruby" (rails/script-name "console") rails/default-environment))))
+      (rails/ruby/run-in-buffer "ruby" "script/console" rails/default-environment))))
 
 (provide 'rails-ruby)

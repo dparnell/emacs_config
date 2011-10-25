@@ -47,18 +47,17 @@
     ("`\\(.+\\)'"
      (1 font-lock-function-name-face))))
 
-(defun rails/compile/match-error (limit)
-  (catch 'found
-    (while (re-search-forward "\\(?:\\[\\|^\\|\\s+\\|(\\)?\\([^ :\n\]+\\):\\([0-9]+\\)+\\b" limit t)
-      (let ((file (match-string 1))
-            (root (rails/root default-directory)))
-        (when root
-          (unless (file-name-absolute-p file)
-            (setq file (concat root file)))
-          (setq file (expand-file-name file))
-          (when (and (file-exists-p file)
-                     (not (files-ext/file-in-directory-p (concat root "vendor/") file)))
-            (throw 'found t)))))))
+(defun rails/compile/match-error ()
+  (let ((file (match-string 1))
+	(root (rails/root default-directory)))
+    (when root
+      (unless (file-name-absolute-p file)
+	(setq file (concat root file)))
+      (setq file (expand-file-name file))
+      (if (and (file-exists-p file)
+	       (not (files-ext/file-in-directory-p (concat root "vendor/") file)))
+	  (list file)
+	nil))))
 
 (defun rails/compile/error-regexp-alist ()
   (list

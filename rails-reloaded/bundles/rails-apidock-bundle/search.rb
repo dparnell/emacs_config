@@ -1,7 +1,8 @@
 #! /usr/bin/env ruby
 
 require 'rubygems'
-require 'activesupport'
+require 'active_support/core_ext'
+require 'json'
 
 LIMIT = 12
 
@@ -11,7 +12,7 @@ def create_data(data_file, file)
     str = f.read
     keywords,data = str.split(";")
     data.gsub!(/^[^=]+= /, "")
-    decoded = ActiveSupport::JSON.decode(data)
+    decoded = JSON.parse(data)
     for it in decoded
       i = {
         :score => it["score"],
@@ -50,6 +51,7 @@ def search(mod, str)
 
   result = result.sort_by{ |a| a[:score] }.reverse
   to_lisp(mod, result[0..LIMIT])
+
 end
 
 def to_lisp(mod, data)

@@ -2,8 +2,8 @@
 ;;; - Variables
 ;;;
 
-(defvar rails/rspec-bundle/command rails/ruby/command)
-(defvar rails/rspec-bundle/spec-options "-O spec/spec.opts")
+(defvar rails/rspec-bundle/command "rspec")
+(defvar rails/rspec-bundle/spec-options "")
 
 ;;; ---------------------------------------------------------
 ;;; - Functions
@@ -14,7 +14,7 @@
    root
    rails-buffer
    rails/rspec-bundle/command
-   (concat "script/spec %s" (format " %s" rails/rspec-bundle/spec-options))
+   (concat "%s" (format " %s" rails/rspec-bundle/spec-options))
    "_spec\\.rb$"))
 
 (defun rails/rspec-bundle/current-method (root rails-buffer)
@@ -23,7 +23,7 @@
      root
      rails-buffer
      rails/rspec-bundle/command
-     (concat "script/spec %s" (format " %s -l %s" rails/rspec-bundle/spec-options line))
+     (concat "%s" (format " %s -l %s" rails/rspec-bundle/spec-options line))
      "_spec\\.rb$")))
 
 (defun rails/rspec-bundle/run-spec-task (root task args)
@@ -111,4 +111,12 @@
                      :file-suffix  "_spec"
                      :file-pattern "{name}/.*"
                      :file-ext  "rb"
-                     :test-to 'lib ))
+                     :test-to 'lib )
+
+  (rails/defresource 'routing-spec "RSpec Routing"
+                     :group 'spec
+                     :dir "spec/routing"
+                     :file-suffix  "_spec"
+                     :file-pattern "{name}/.*"
+                     :file-ext  "rb"
+                     :test-to 'routing))
