@@ -55,10 +55,19 @@
 ;; scala mode hooks
 (add-hook 'scala-mode-hook 'scala-turnoff-indent-tabs-mode)
 
-;; ensime Scala stuff
+;; Scala stuff
 (require 'scala-mode)
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
-(add-to-list 'load-path "~/.emacs.d/ensime_2.8.0-0.2.4/elisp/")
+;; ensime - scala support
+;;
+;; Before ensime will work it is necessary to build it from source
+;; Go into the ensime directory and enter the following command
+;;
+;;     sbt stage
+;;
+;; This will build ensime :)
+;;
+(add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
