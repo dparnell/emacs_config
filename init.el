@@ -67,9 +67,10 @@
 ;;
 ;; This will build ensime :)
 ;;
-(add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(if (file-accessible-directory-p "~/.emacs.d/ensime/dist/elisp/") (
+ (add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
+ (require 'ensime)
+ (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 ;; rspec
 (setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
@@ -151,4 +152,8 @@
 (require 'mouse) 
 (xterm-mouse-mode t) 
 (defun track-mouse (e))
+
+;; PHP support
+(setq load-path (append load-path '("~/.emacs.d/php-mode")))
+(require 'php-mode)
 
