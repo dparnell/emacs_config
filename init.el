@@ -67,10 +67,10 @@
 ;;
 ;; This will build ensime :)
 ;;
-(if (file-accessible-directory-p "~/.emacs.d/ensime/dist/elisp/") (
- (add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
- (require 'ensime)
- (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
+;; (if (file-accessible-directory-p "~/.emacs.d/ensime/dist/elisp/") (
+;;  (add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
+;; (require 'ensime)
+;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 ;; rspec
 (setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
@@ -120,6 +120,10 @@
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
+
+;; Erlang mode
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/erlang-mode"))
+(require 'erlang-start)
 
 ;; Set up mumao they way I want it
 (custom-set-variables
