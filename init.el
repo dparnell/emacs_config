@@ -161,3 +161,11 @@
 (setq load-path (append load-path '("~/.emacs.d/php-mode")))
 (require 'php-mode)
 
+;; reformat the current file
+;; stolen from here: http://emacsblog.org/2007/01/17/indent-whole-buffer/
+(defun iwb ()
+  "indent whole buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
