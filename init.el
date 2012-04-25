@@ -92,6 +92,7 @@
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 
 ;; start the emacs server
+(chmod "~/.emacs.d/server" #o700)
 (setq server-socket-dir "~/.emacs.d/server")
 (server-start)
 
