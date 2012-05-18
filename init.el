@@ -2,6 +2,16 @@
 (if (< emacs-major-version 23)
       (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
+;; solarized colour scheme
+(if (< emacs-major-version 24)
+      (progn
+        (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
+	(require 'color-theme-solarized)
+	(color-theme-solarized-dark))
+      (progn
+	(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/custom-theme-load-path")))
+	(load-theme 'solarized-dark t)))
+
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 ;; Use spaces instead of TABs
