@@ -153,6 +153,10 @@
 	  '(lambda ()
 	     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
+;; Textile mode
+(autoload 'textile-minor-mode "~/.emacs.d/textile-minor-mode.el")
+(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-minor-mode))
+
 ;; turn on mouse support in iTerm2
 (require 'mouse) 
 (xterm-mouse-mode t) 
