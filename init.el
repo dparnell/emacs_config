@@ -2,6 +2,16 @@
 (if (< emacs-major-version 23)
       (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
+;; solarized colour scheme
+(if (< emacs-major-version 24)
+      (progn
+        (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
+	(require 'color-theme-solarized)
+	(color-theme-solarized-dark))
+      (progn
+	(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/custom-theme-load-path")))
+	(load-theme 'solarized-dark t)))
+
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 ;; Use spaces instead of TABs
@@ -92,6 +102,7 @@
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 
 ;; start the emacs server
+(chmod "~/.emacs.d/server" #o700)
 (setq server-socket-dir "~/.emacs.d/server")
 (server-start)
 
@@ -151,6 +162,10 @@
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
 	     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+;; Textile mode
+(autoload 'textile-minor-mode "~/.emacs.d/textile-minor-mode.el")
+(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-minor-mode))
 
 ;; turn on mouse support in iTerm2
 (require 'mouse) 
