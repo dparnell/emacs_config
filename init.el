@@ -184,3 +184,35 @@
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
+
+(autoload 'circe "circe" "Connect to an IRC server" t)
+
+(add-to-list 'load-path "~/.emacs.d/circe/lisp")
+
+;; This defines the password variables below
+(when (file-exists-p "~/.emacs.d/private.el")
+  (load-file "~/.emacs.d/private.el"))
+
+(setq circe-default-realname irc-real-name
+      circe-ignore-list nil
+      circe-server-coding-system '(latin-1 . undecided)
+      circe-server-auto-join-channels
+      '(("" "#dev")))
+
+(setq lui-max-buffer-size 30000)
+
+(eval-after-load "circe"
+  '(progn
+     (require 'lui-irc-colors)
+     (add-to-list 'lui-pre-output-hook 'lui-irc-colors)
+     (add-to-list 'circe-receive-message-functions
+                  'fc-got-something)))
+
+(defun fc-got-something (nick user host command args)
+  ;; TODO: add code here to make a beep noise when a message comes in
+  )
+
+(defun irc ()
+  "Connect to IRC."
+  (interactive)
+  (circe irc-host irc-port irc-net irc-password))
