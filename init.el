@@ -209,7 +209,7 @@
                   'fc-got-something)))
 
 (defun fc-got-something (nick user host command args)
-  ;; TODO: add code here to make a beep noise when a message comes in
+;;	(beep)
   )
 
 (defun irc ()
