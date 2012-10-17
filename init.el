@@ -191,10 +191,11 @@
 
 ;; This defines the password variables below
 (when (file-exists-p "~/.emacs.d/private.el")
-  (load-file "~/.emacs.d/private.el"))
+  (progn
+    (load-file "~/.emacs.d/private.el")
+    (setq circe-default-realname irc-real-name)))
 
-(setq circe-default-realname irc-real-name
-      circe-ignore-list nil
+(setq circe-ignore-list nil
       circe-server-coding-system '(latin-1 . undecided)
       circe-server-auto-join-channels
       '(("" "#dev")))
