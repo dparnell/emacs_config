@@ -1,0 +1,5 @@
+(setq irc-host "127.0.0.1"
+      irc-port 6667
+      irc-net "IRC"
+      irc-password ()
+      irc-real-name "Somebody")
