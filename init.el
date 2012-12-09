@@ -217,3 +217,11 @@
   "Connect to IRC."
   (interactive)
   (circe irc-host irc-port irc-net irc-password))
+
+
+;; try to make sure that we don't see any TAB characters introduced into files
+(add-hook 'after-change-major-mode-hook 
+          '(lambda () 
+             (setq-default indent-tabs-mode nil)
+             (setq c-basic-indent 2)
+             (setq tab-width 2)))
