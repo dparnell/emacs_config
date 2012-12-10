@@ -9,7 +9,7 @@
 	(require 'color-theme-solarized)
 	(color-theme-solarized-dark))
       (progn
-	(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/custom-theme-load-path")))
+	(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
 	(load-theme 'solarized-dark t)))
 
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
