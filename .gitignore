@@ -4,3 +4,4 @@ nxhtml/etc/schema/xhtml-loader.rnc
 tramp
 ac-comphist.dat
 private.el
+.DS_Store
