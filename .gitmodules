@@ -29,3 +29,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "circe"]
 	path = circe
 	url = git://github.com/jorgenschaefer/circe.git
+[submodule "scala-mode2"]
+	path = scala-mode2
+	url = git://github.com/hvesalai/scala-mode2.git

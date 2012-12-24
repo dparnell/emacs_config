@@ -55,9 +55,15 @@
 (require 'rails-autoload)
 
 ;; scala-mode
-(let ((path "~/.emacs.d/scala-mode"))
-  (setq load-path (cons path load-path))
-  (load "scala-mode-auto.el"))
+(if (or (< emacs-major-version 24) (and (= emacs-major-version 24) (< emacs-minor-version 2)))
+    (progn      
+      (let ((path "~/.emacs.d/scala-mode"))
+        (setq load-path (cons path load-path))
+        (load "scala-mode-auto.el")
+	(require 'scala-mode)))
+  (progn
+    (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
+    (require 'scala-mode2)))
 
 (defun scala-turnoff-indent-tabs-mode ()
   (setq indent-tabs-mode nil))
@@ -66,7 +72,6 @@
 (add-hook 'scala-mode-hook 'scala-turnoff-indent-tabs-mode)
 
 ;; Scala stuff
-(require 'scala-mode)
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 ;; ensime - scala support
 ;;
