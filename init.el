@@ -181,6 +181,9 @@
 (setq load-path (append load-path '("~/.emacs.d/php-mode")))
 (require 'php-mode)
 
+;; Django style template support
+(add-to-list 'auto-mode-alist '("\\.dtl$" . django-html-mumamo-mode))
+
 ;; reformat the current file
 ;; stolen from here: http://emacsblog.org/2007/01/17/indent-whole-buffer/
 (defun iwb ()
