@@ -12,6 +12,13 @@
 	(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
 	(load-theme 'solarized-dark t)))
 
+
+;; load poweline
+(setq load-path (append load-path '("~/.emacs.d/powerline")))
+(require 'powerline)
+(powerline-default-theme)
+
+;; load the ruby mode
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 ;; Use spaces instead of TABs
@@ -180,6 +187,15 @@
 ;; PHP support
 (setq load-path (append load-path '("~/.emacs.d/php-mode")))
 (require 'php-mode)
+
+(setq load-path (append load-path '("~/.emacs.d/multi-web-mode")))
+(require 'multi-web-mode)
+(setq mweb-default-major-mode 'html-mode)
+(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                  (js-mode "<script[^>]*>" "</script>")
+                  (css-mode "<style[^>]*>" "</style>")))
+(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+(multi-web-global-mode 1)
 
 ;; Django style template support
 (add-to-list 'auto-mode-alist '("\\.dtl$" . django-html-mumamo-mode))
