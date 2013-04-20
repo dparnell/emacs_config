@@ -19,17 +19,17 @@
 
 (set-face-attribute 'mode-line nil
                     :foreground "#fdf6e3"
-                    :background "#333"
+                    :background "#333333"
                     :box nil)
 (set-face-attribute 'mode-line-inactive nil
                     :box nil)
 (set-face-attribute 'powerline-active1 nil
                     :foreground "#657b83"
-                    :background "#111"
+                    :background "#111111"
                     :box nil)
 (set-face-attribute 'powerline-active2 nil
                     :foreground "#839496"
-                    :background "#000"
+                    :background "#000000"
                     :box nil)
 
 (if (not window-system)
