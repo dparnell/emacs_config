@@ -17,14 +17,19 @@
 (setq load-path (append load-path '("~/.emacs.d/powerline")))
 (require 'powerline)
 
-(setq powerline-color1 "#657b83")
-(setq powerline-color2 "#839496")
-
 (set-face-attribute 'mode-line nil
                     :foreground "#fdf6e3"
-                    :background "#859900"
+                    :background "#333"
                     :box nil)
 (set-face-attribute 'mode-line-inactive nil
+                    :box nil)
+(set-face-attribute 'powerline-active1 nil
+                    :foreground "#657b83"
+                    :background "#111"
+                    :box nil)
+(set-face-attribute 'powerline-active2 nil
+                    :foreground "#839496"
+                    :background "#000"
                     :box nil)
 
 (if (not window-system)
