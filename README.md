@@ -19,6 +19,7 @@ Installation
     cd .emacs.d
     git submodule init
     git submodule update
+    cd ..
     ln -s .emacs.d/init.el .emacs
 
 What you get
