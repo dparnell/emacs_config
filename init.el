@@ -263,9 +263,9 @@ circe-server-auto-join-channels
 )
 
 (defun irc ()
-"Connect to IRC."
-(interactive)
-(circe irc-host irc-port irc-net irc-password))
+  "Connect to IRC."
+  (interactive)
+  (circe "IRC"))
 
 (setq whitespace-action '(auto-cleanup)) ;; automatically clean up bad whitespace
 (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
