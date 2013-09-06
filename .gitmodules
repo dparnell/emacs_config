@@ -41,3 +41,9 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "popup-el"]
 	path = popup-el
 	url = git@github.com:auto-complete/popup-el.git
+[submodule "flymake-easy"]
+	path = flymake-easy
+	url = git@github.com:purcell/flymake-easy.git
+[submodule "flymake-jslint"]
+	path = flymake-jslint
+	url = https://github.com/purcell/flymake-jslint

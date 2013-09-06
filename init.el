@@ -280,3 +280,17 @@
 (add-to-list 'load-path "~/.emacs.d/auto-complete/")
 (require 'auto-complete-config)
 (ac-config-default)
+
+;; quicklisp support
+(when (file-exists-p "~/quicklisp/slime-helper.el")
+  (progn
+    (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    (setq inferior-lisp-program "sbcl")))
+
+;; add flymake support for js
+(add-to-list 'load-path "~/.emacs.d/flymake-easy")
+(require 'flymake-easy)
+(add-to-list 'load-path "~/.emacs.d/flymake-jslint")
+(require 'flymake-jslint)
+(add-hook 'js-mode-hook 'flymake-jslint-load)
+
