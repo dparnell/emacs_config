@@ -29,3 +29,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "circe"]
 	path = circe
 	url = git://github.com/jorgenschaefer/circe.git
+[submodule "ecb"]
+	path = ecb
+	url = git://github.com/emacsmirror/ecb.git
