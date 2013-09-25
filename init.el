@@ -43,6 +43,9 @@
 
 (powerline-default-theme)
 
+;; make sure that files are saved without trailing whitespace!
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; load the ruby mode
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
