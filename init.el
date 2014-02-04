@@ -1,22 +1,22 @@
 ;; Set up the environment path
 (if (string-equal "darwin" (symbol-name system-type))
-      (progn
-        (setenv "PATH" (concat "/usr/local/bin:/usr/local/sbin:" (getenv "PATH")))
-        (setq exec-path (append exec-path '("/usr/local/bin" "/usr/local/sbin")))))
+    (progn
+      (setenv "PATH" (concat "/usr/local/bin:/usr/local/sbin:" (getenv "PATH")))
+      (setq exec-path (append exec-path '("/usr/local/bin" "/usr/local/sbin")))))
 
 ;; emacs22 setup
 (if (< emacs-major-version 23)
-(setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
+    (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
 ;; solarized colour scheme
 (if (< emacs-major-version 24)
-(progn
-(setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
-(require 'color-theme-solarized)
-(color-theme-solarized-dark))
-(progn
-(setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
-(load-theme 'solarized-dark t)))
+    (progn
+      (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
+      (require 'color-theme-solarized)
+      (color-theme-solarized-dark))
+  (progn
+    (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
+    (load-theme 'solarized-dark t)))
 
 
 ;; load powerline
@@ -24,22 +24,22 @@
 (require 'powerline)
 
 (set-face-attribute 'mode-line nil
-	    :foreground "#fdf6e3"
-	    :background "#333333"
-	    :box nil)
+                    :foreground "#fdf6e3"
+                    :background "#333333"
+                    :box nil)
 (set-face-attribute 'mode-line-inactive nil
-	    :box nil)
+                    :box nil)
 (set-face-attribute 'powerline-active1 nil
-	    :foreground "#657b83"
-	    :background "#111111"
-	    :box nil)
+                    :foreground "#657b83"
+                    :background "#111111"
+                    :box nil)
 (set-face-attribute 'powerline-active2 nil
-	    :foreground "#839496"
-	    :background "#000000"
-	    :box nil)
+                    :foreground "#839496"
+                    :background "#000000"
+                    :box nil)
 
 (if (not window-system)
-(setq powerline-default-separator 'utf-8))
+    (setq powerline-default-separator 'utf-8))
 
 (powerline-default-theme)
 
@@ -62,16 +62,16 @@
 (add-to-list 'load-path "~/.emacs.d/nxhtml/util")
 (require 'mumamo-fun)
 (setq mumamo-chunk-coloring 'submode-colored)
-; (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
-; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
+                                        ; (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
+                                        ; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
 
 (setq
-nxhtml-global-minor-mode t
-mumamo-chunk-coloring 'submode-colored
-nxhtml-skip-welcome t
-indent-region-mode t
-rng-nxml-auto-validate-flag nil
-nxml-degraded t)
+ nxhtml-global-minor-mode t
+ mumamo-chunk-coloring 'submode-colored
+ nxhtml-skip-welcome t
+ indent-region-mode t
+ rng-nxml-auto-validate-flag nil
+ nxml-degraded t)
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
 
@@ -81,9 +81,9 @@ nxml-degraded t)
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
 
 ;; RHTML mode
-;;; rhtml mode
-; (add-to-list 'load-path "~/.emacs.d/rhtml")
-; (require 'rhtml-mode)
+  ;;; rhtml mode
+                                        ; (add-to-list 'load-path "~/.emacs.d/rhtml")
+                                        ; (require 'rhtml-mode)
 
 ;; load rails-reloaded
 (setq load-path (cons (expand-file-name "~/.emacs.d/rails-reloaded") load-path))
@@ -91,17 +91,17 @@ nxml-degraded t)
 
 ;; scala-mode
 (if (or (< emacs-major-version 24) (and (= emacs-major-version 24) (< emacs-minor-version 2)))
-(progn      
-(let ((path "~/.emacs.d/scala-mode"))
-(setq load-path (cons path load-path))
-(load "scala-mode-auto.el")
-(require 'scala-mode)))
-(progn
-(add-to-list 'load-path "~/.emacs.d/scala-mode2/")
-(require 'scala-mode2)))
+    (progn
+      (let ((path "~/.emacs.d/scala-mode"))
+        (setq load-path (cons path load-path))
+        (load "scala-mode-auto.el")
+        (require 'scala-mode)))
+  (progn
+    (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
+    (require 'scala-mode2)))
 
 (defun scala-turnoff-indent-tabs-mode ()
-(setq indent-tabs-mode nil))
+  (setq indent-tabs-mode nil))
 
 ;; scala mode hooks
 (add-hook 'scala-mode-hook 'scala-turnoff-indent-tabs-mode)
@@ -128,7 +128,7 @@ nxml-degraded t)
 
 ;; Display the current date and time in the status bar
 (setq display-time-day-and-date t
-display-time-24hr-format t)
+      display-time-24hr-format t)
 (display-time)
 
 ;; gforth
@@ -150,8 +150,8 @@ display-time-24hr-format t)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
 (defun close-all-buffers ()
-(interactive)
-(mapc 'kill-buffer (buffer-list)))
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
 
 (global-set-key "\C-cx" 'close-all-buffers)
 
@@ -178,38 +178,37 @@ display-time-24hr-format t)
 
 ;; Set up mumao they way I want it
 (custom-set-variables
-;; custom-set-variables was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-)
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ecb-options-version "2.40"))
 (custom-set-faces
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-'(mumamo-background-chunk-major ((((class color) (min-colors 87) (background light)) nil)))
-'(mumamo-background-chunk-submode1 ((((class color) (min-colors 88) (background light)) (:width normal))))
-'(mumamo-background-chunk-submode2 ((((class color) (min-colors 88) (background light)) (:weight normal))))
-'(mumamo-background-chunk-submode3 ((((class color) (min-colors 88) (background light)) nil)))
-'(mumamo-background-chunk-submode4 ((((class color) (min-colors 88) (background light)) nil)))
-)
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mumamo-background-chunk-major ((((class color) (min-colors 87) (background light)) nil)))
+ '(mumamo-background-chunk-submode1 ((((class color) (min-colors 88) (background light)) (:width normal))))
+ '(mumamo-background-chunk-submode2 ((((class color) (min-colors 88) (background light)) (:weight normal))))
+ '(mumamo-background-chunk-submode3 ((((class color) (min-colors 88) (background light)) nil)))
+ '(mumamo-background-chunk-submode4 ((((class color) (min-colors 88) (background light)) nil))))
 
 ;; Yaml mode
 (setq load-path (append load-path '("~/.emacs.d/yaml-mode")))
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-hook 'yaml-mode-hook
-  '(lambda ()
-     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; Textile mode
 (autoload 'textile-minor-mode "~/.emacs.d/textile-minor-mode.el")
 (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-minor-mode))
 
 ;; turn on mouse support in iTerm2
-(require 'mouse) 
-(xterm-mouse-mode t) 
+(require 'mouse)
+(xterm-mouse-mode t)
 (defun track-mouse (e))
 
 ;; PHP support
@@ -224,8 +223,8 @@ display-time-24hr-format t)
 (require 'multi-web-mode)
 (setq mweb-default-major-mode 'html-mode)
 (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-	  (js-mode "<script[^>]*>" "</script>")
-	  (css-mode "<style[^>]*>" "</style>")))
+                  (js-mode "<script[^>]*>" "</script>")
+                  (css-mode "<style[^>]*>" "</style>")))
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
 
@@ -235,11 +234,11 @@ display-time-24hr-format t)
 ;; reformat the current file
 ;; stolen from here: http://emacsblog.org/2007/01/17/indent-whole-buffer/
 (defun iwb ()
-"indent whole buffer"
-(interactive)
-(delete-trailing-whitespace)
-(indent-region (point-min) (point-max) nil)
-(untabify (point-min) (point-max)))
+  "indent whole buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
 
 (autoload 'circe "circe" "Connect to an IRC server" t)
 
@@ -247,27 +246,27 @@ display-time-24hr-format t)
 
 ;; This defines the password variables below
 (when (file-exists-p "~/.emacs.d/private.el")
-(progn
-(load-file "~/.emacs.d/private.el")
-(setq circe-default-realname irc-real-name)))
+  (progn
+    (load-file "~/.emacs.d/private.el")
+    (setq circe-default-realname irc-real-name)))
 
 (setq circe-ignore-list nil
-circe-server-coding-system '(latin-1 . undecided)
-circe-server-auto-join-channels
-'(("" "#dev")))
+      circe-server-coding-system '(latin-1 . undecided)
+      circe-server-auto-join-channels
+      '(("" "#dev")))
 
 (setq lui-max-buffer-size 30000)
 
 (eval-after-load "circe"
-'(progn
-(require 'lui-irc-colors)
-(add-to-list 'lui-pre-output-hook 'lui-irc-colors)
-(add-to-list 'circe-receive-message-functions
-	  'fc-got-something)))
+  '(progn
+     (require 'lui-irc-colors)
+     (add-to-list 'lui-pre-output-hook 'lui-irc-colors)
+     (add-to-list 'circe-receive-message-functions
+                  'fc-got-something)))
 
 (defun fc-got-something (nick user host command args)
-;;	(beep)
-)
+  ;;  (beep)
+  )
 
 (defun irc ()
   "Connect to IRC."
@@ -279,11 +278,11 @@ circe-server-auto-join-channels
 
 
 ;; try to make sure that we don't see any TAB characters introduced into files
-(add-hook 'after-change-major-mode-hook 
-  '(lambda () 
-     (setq-default indent-tabs-mode nil)
-     (setq c-basic-indent 2)
-     (setq tab-width 2)))
+(add-hook 'after-change-major-mode-hook
+          '(lambda ()
+             (setq-default indent-tabs-mode nil)
+             (setq c-basic-indent 2)
+             (setq tab-width 2)))
 
 
 ;; auto-complete support
@@ -296,9 +295,9 @@ circe-server-auto-join-channels
 
 ;; quicklisp support
 (when (file-exists-p "~/quicklisp/slime-helper.el")
-(progn
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")))
+  (progn
+    (load (expand-file-name "~/quicklisp/slime-helper.el"))
+    (setq inferior-lisp-program "sbcl")))
 
 ;; add flymake support for js
 (add-to-list 'load-path "~/.emacs.d/flymake-easy")
@@ -307,3 +306,20 @@ circe-server-auto-join-channels
 (require 'flymake-jslint)
 (add-hook 'js-mode-hook 'flymake-jslint-load)
 
+;; add flymake suppport for Erlang
+(defconst flymake-erlang-err-line-patterns
+  '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
+
+(defun flymake-erlang-command (filename)
+  "Construct a command that flymake can use to check erlang source."
+  (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
+
+(defun flymake-erlang-load ()
+  "Configure flymake mode to check the current buffer's erlang syntax."
+  (interactive)
+  (flymake-easy-load 'flymake-erlang-command
+                     flymake-erlang-err-line-patterns
+                     'inplace
+                     "erl"))
+
+(add-hook 'erlang-mode-hook 'flymake-erlang-load)

@@ -1,0 +1,32 @@
+#!/usr/bin/env escript
+-export([main/1]).
+
+
+find_deps(".") ->
+    not_found;
+find_deps(Dir) ->
+    DepsDir = Dir ++ "/deps",
+    case filelib:is_dir(DepsDir) of
+        false -> find_deps(filename:dirname(Dir));
+        true -> DepsDir
+    end.
+
+main([File_Name]) ->
+    DepsDir = find_deps(filename:absname(filename:dirname(File_Name))),
+
+    Includes = case filelib:is_dir(DepsDir) of
+                   false ->
+                       ["../include"];
+                   true ->
+                       {ok, Deps} = file:list_dir(DepsDir),
+                       [{i, "../include"}| [{i,Di} || D <- Deps,
+                              begin
+                                  code:add_path(DepsDir++"/"++D++"/ebin"),
+                                  Di = DepsDir++"/"++D++"/include",
+                                  filelib:is_dir(Di)
+                              end]]
+               end,
+
+    compile:file(File_Name, [warn_obsolete_guard, warn_unused_import,
+                             warn_shadow_vars, warn_export_vars,
+                             strong_validation, report | Includes]).
