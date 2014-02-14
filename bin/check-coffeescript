@@ -1,0 +1,3 @@
+#!/bin/sh
+
+coffeelint --csv --file ~/.emacs.d/.coffeelint.json $*

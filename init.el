@@ -325,3 +325,21 @@
                      "erl"))
 
 (add-hook 'erlang-mode-hook 'flymake-erlang-load)
+
+;; add flymake suppport for Coffeescript
+(defconst flymake-coffeescript-err-line-patterns
+  '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
+
+(defun flymake-coffeescript-command (filename)
+  "Construct a command that flymake can use to check coffeescript source."
+  (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
+
+(defun flymake-coffeescript-load ()
+  "Configure flymake mode to check the current buffer's coffeescript syntax."
+  (interactive)
+  (flymake-easy-load 'flymake-coffeescript-command
+                     flymake-coffeescript-err-line-patterns
+                     'inplace
+                     "coffee"))
+
+(add-hook 'coffee-mode-hook 'flymake-coffeescript-load)

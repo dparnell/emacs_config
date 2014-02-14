@@ -1,7 +1,6 @@
 #!/usr/bin/env escript
 -export([main/1]).
 
-
 find_deps(".") ->
     not_found;
 find_deps(Dir) ->
