@@ -160,11 +160,13 @@
 (require 'feature-mode)
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 
-;; Coffee script mode
-(add-to-list 'load-path "~/.emacs.d/coffee-mode")
-(require 'coffee-mode)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+;; Coffee script mode - Emacs 24 and higher required
+(if (> emacs-major-version 23)
+    (progn
+        (add-to-list 'load-path "~/.emacs.d/coffee-mode")
+        (require 'coffee-mode)
+        (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+        (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))))
 
 ;; SCSS mode
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/scss-mode"))
