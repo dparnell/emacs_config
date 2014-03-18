@@ -8,6 +8,13 @@
 (if (< emacs-major-version 23)
     (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
+;; make sure that if we open a frame on a terminal without graphical capabilities we don't set the background colour
+(defun on-frame-open (frame)
+  (if (not (display-graphic-p frame))
+      (set-face-background 'default "unspecified-bg" frame)))
+(on-frame-open (selected-frame))
+(add-hook 'after-make-frame-functions 'on-frame-open)
+
 ;; solarized colour scheme
 (message "Loading Solarized theme")
 (if (< emacs-major-version 24)
@@ -18,7 +25,6 @@
   (progn
     (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
     (load-theme 'solarized-dark t)))
-
 
 ;; load powerline
 (message "Loading powerline")
