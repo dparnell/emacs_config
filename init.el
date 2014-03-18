@@ -9,6 +9,7 @@
     (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
 ;; solarized colour scheme
+(message "Loading Solarized theme")
 (if (< emacs-major-version 24)
     (progn
       (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
@@ -20,6 +21,7 @@
 
 
 ;; load powerline
+(message "Loading powerline")
 (setq load-path (append load-path '("~/.emacs.d/powerline")))
 (require 'powerline)
 
@@ -47,6 +49,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; load the ruby mode
+(message "Loading ruby mode")
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 ;; Use spaces instead of TABs
@@ -54,38 +57,32 @@
 (setq c-indent-level 2)
 
 ;; Magit
+(message "Loading magit")
 (setq load-path (append load-path '("~/.emacs.d/magit")))
 (require 'magit)
-
-;; MuMaMo-Mode for rhtml files
-(load "~/.emacs.d/nxhtml/autostart.el")
-(add-to-list 'load-path "~/.emacs.d/nxhtml/util")
-(require 'mumamo-fun)
-(setq mumamo-chunk-coloring 'submode-colored)
-                                        ; (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
-                                        ; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
-
-(setq
- nxhtml-global-minor-mode t
- mumamo-chunk-coloring 'submode-colored
- nxhtml-skip-welcome t
- indent-region-mode t
- rng-nxml-auto-validate-flag nil
- nxml-degraded t)
-(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-html-mumamo))
-(add-to-list 'auto-mode-alist '("\\.rhtml\\'" . eruby-html-mumamo))
 
 ;; Special rails file
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
 
-;; RHTML mode
-  ;;; rhtml mode
-                                        ; (add-to-list 'load-path "~/.emacs.d/rhtml")
-                                        ; (require 'rhtml-mode)
+;; Web-mode
+(message "Loading web-mode")
+(setq load-path (cons (expand-file-name "~/.emacs.d/web-mode") load-path))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.rhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.dtl\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;; load rails-reloaded
+(message "Loading rails-reloaded")
 (setq load-path (cons (expand-file-name "~/.emacs.d/rails-reloaded") load-path))
 (require 'rails-autoload)
 
@@ -93,10 +90,12 @@
 (if (or (< emacs-major-version 24) (and (= emacs-major-version 24) (< emacs-minor-version 2)))
     (progn
       (let ((path "~/.emacs.d/scala-mode"))
+        (message "Loading scala-mode")
         (setq load-path (cons path load-path))
         (load "scala-mode-auto.el")
         (require 'scala-mode)))
   (progn
+    (message "Loading scala-mode2")
     (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
     (require 'scala-mode2)))
 
@@ -123,6 +122,7 @@
 ;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 ;; rspec
+(message "Loading rspec")
 (setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
 (require 'rspec-mode)
 
@@ -132,16 +132,19 @@
 (display-time)
 
 ;; gforth
+(message "Loading gforth")
 (setq load-path (append load-path '("~/.emacs.d/gforth")))
 (autoload 'forth-mode "gforth.el")
 (autoload 'forth-block-mode "gforth.el")
 (add-to-list 'auto-mode-alist '("\\.fs$" . forth-mode))
 
 ;; actionscript mode
+(message "Loading actionscript-mode")
 (autoload 'actionscript-mode "~/.emacs.d/actionscript-mode.el")
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
 
 ;; start the emacs server
+(message "Starting emacs server")
 (chmod "~/.emacs.d/server" #o700)
 (setq server-socket-dir "~/.emacs.d/server")
 (server-start)
@@ -156,6 +159,7 @@
 (global-set-key "\C-cx" 'close-all-buffers)
 
 ;; Cucumber mode
+(message "Loading cucumber")
 (add-to-list 'load-path "~/.emacs.d/cucumber.el")
 (require 'feature-mode)
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
@@ -163,6 +167,7 @@
 ;; Coffee script mode - Emacs 24 and higher required
 (if (> emacs-major-version 23)
     (progn
+	(message "Loading coffee-mode")
         (add-to-list 'load-path "~/.emacs.d/coffee-mode")
         (require 'coffee-mode)
         (custom-set-variables '(coffee-tab-width 2))
@@ -170,34 +175,19 @@
         (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))))
 
 ;; SCSS mode
+(message "Loading scss-mode")
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/scss-mode"))
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
 
 ;; Erlang mode
+(message "Loading erlang-mode")
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/erlang-mode"))
 (require 'erlang-start)
 
-;; Set up mumao they way I want it
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ecb-options-version "2.40"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(mumamo-background-chunk-major ((((class color) (min-colors 87) (background light)) nil)))
- '(mumamo-background-chunk-submode1 ((((class color) (min-colors 88) (background light)) (:width normal))))
- '(mumamo-background-chunk-submode2 ((((class color) (min-colors 88) (background light)) (:weight normal))))
- '(mumamo-background-chunk-submode3 ((((class color) (min-colors 88) (background light)) nil)))
- '(mumamo-background-chunk-submode4 ((((class color) (min-colors 88) (background light)) nil))))
-
 ;; Yaml mode
+(message "Loading yaml-mode")
 (setq load-path (append load-path '("~/.emacs.d/yaml-mode")))
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -206,33 +196,25 @@
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; Textile mode
+(message "Loading textile-mode")
 (autoload 'textile-minor-mode "~/.emacs.d/textile-minor-mode.el")
 (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-minor-mode))
 
 ;; turn on mouse support in iTerm2
+(message "Setting up iTerm2 mouse support")
 (require 'mouse)
 (xterm-mouse-mode t)
 (defun track-mouse (e))
 
 ;; PHP support
+(message "Loading php-mode")
 (setq load-path (append load-path '("~/.emacs.d/php-mode")))
 (require 'php-mode)
 
 ;; ecb
+(message "Loading ecb")
 (add-to-list 'load-path "~/.emacs.d/ecb")
 (require 'ecb)
-
-(setq load-path (append load-path '("~/.emacs.d/multi-web-mode")))
-(require 'multi-web-mode)
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script[^>]*>" "</script>")
-                  (css-mode "<style[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-(multi-web-global-mode 1)
-
-;; Django style template support
-(add-to-list 'auto-mode-alist '("\\.dtl$" . django-html-mumamo-mode))
 
 ;; reformat the current file
 ;; stolen from here: http://emacsblog.org/2007/01/17/indent-whole-buffer/
@@ -243,6 +225,8 @@
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
+;; circe
+(message "Loading circe")
 (autoload 'circe "circe" "Connect to an IRC server" t)
 
 (add-to-list 'load-path "~/.emacs.d/circe/lisp")
@@ -289,9 +273,8 @@
 
 
 ;; auto-complete support
-
+(message "Setting up auto-complete stuff")
 (add-to-list 'load-path "~/.emacs.d/popup-el")
-
 (add-to-list 'load-path "~/.emacs.d/auto-complete/")
 (require 'auto-complete-config)
 (ac-config-default)
@@ -299,10 +282,12 @@
 ;; quicklisp support
 (when (file-exists-p "~/quicklisp/slime-helper.el")
   (progn
+    (message "Loading quick-lisp support")
     (load (expand-file-name "~/quicklisp/slime-helper.el"))
     (setq inferior-lisp-program "sbcl")))
 
 ;; add flymake support for js
+(message "Loading flymake-easy")
 (add-to-list 'load-path "~/.emacs.d/flymake-easy")
 (require 'flymake-easy)
 (add-to-list 'load-path "~/.emacs.d/flymake-jslint")

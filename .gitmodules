@@ -35,9 +35,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "scala-mode2"]
 	path = scala-mode2
 	url = git://github.com/hvesalai/scala-mode2.git
-[submodule "multi-web-mode"]
-	path = multi-web-mode
-	url = git://github.com/fgallina/multi-web-mode.git
 [submodule "powerline"]
 	path = powerline
 	url = git://github.com/dparnell/powerline.git
@@ -50,3 +47,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "flymake-jslint"]
 	path = flymake-jslint
 	url = git://github.com/purcell/flymake-jslint
+[submodule "web-mode"]
+	path = web-mode
+	url = https://github.com/fxbois/web-mode.git
