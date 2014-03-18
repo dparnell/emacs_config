@@ -6,3 +6,4 @@ ac-comphist.dat
 private.el
 .DS_Store
 ede-projects.el
+local-settings.el

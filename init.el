@@ -335,3 +335,7 @@
                      "coffee"))
 
 (add-hook 'coffee-mode-hook 'flymake-coffeescript-load)
+
+
+(when (file-exists-p "~/.emacs.d/local-settings.el")
+    (load-file "~/.emacs.d/local-settings.el"))

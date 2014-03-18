@@ -1,0 +1,2 @@
+;; Add any settings for this machine only
+(set-face-attribute 'default nil :family "Menlo")
