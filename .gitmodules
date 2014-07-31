@@ -50,3 +50,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "web-mode"]
 	path = web-mode
 	url = https://github.com/fxbois/web-mode.git
+[submodule "slime"]
+	path = slime
+	url = https://github.com/slime/slime.git
