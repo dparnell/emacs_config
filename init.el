@@ -62,7 +62,7 @@
 (setq load-path (append load-path '("~/.emacs.d")))
 (require 'cl-lib)
 
-(setq rdebug-emacs-path (shell-command-to-string "ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+(setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
 (if (not (equal "" rdebug-emacs-path))
     (progn
       (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
@@ -301,8 +301,13 @@
 (require 'slime-autoloads)
  
 ;; Set your lisp system and, optionally, some contribs
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
-(setq slime-contribs '(slime-fancy))
+(setq inferior-lisp-program "/usr/local/bin/sbcl"
+      lisp-indent-function 'common-lisp-indent-function
+      slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+      slime-startup-animation t)
+(require 'slime-autoloads)
+(slime-setup '(slime-fancy slime-banner slime-tramp slime-presentations slime-asdf))
+(setq slime-protocol-version 'ignore) 
 
 ;; quicklisp support
 (when (file-exists-p "~/quicklisp/slime-helper.el")
