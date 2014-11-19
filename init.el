@@ -59,8 +59,7 @@
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 (message "Loading debug support")
-(setq load-path (append load-path '("~/.emacs.d")))
-(require 'cl-lib)
+(load-file "~/.emacs.d/cl-lib.el")
 
 (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
 (if (not (equal "" rdebug-emacs-path))
@@ -141,6 +140,11 @@
 (message "Loading rspec")
 (setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
 (require 'rspec-mode)
+
+;; minimap
+(message "Loading minimap")
+(setq load-path (append load-path '("~/.emacs.d/emacs-minimap")))
+(require 'minimap)
 
 ;; Display the current date and time in the status bar
 (setq display-time-day-and-date t
@@ -299,7 +303,7 @@
 ;; setup load-path and autoloads
 (add-to-list 'load-path "~/.emacs.d/slime")
 (require 'slime-autoloads)
- 
+
 ;; Set your lisp system and, optionally, some contribs
 (setq inferior-lisp-program "/usr/local/bin/sbcl"
       lisp-indent-function 'common-lisp-indent-function
@@ -307,7 +311,7 @@
       slime-startup-animation t)
 (require 'slime-autoloads)
 (slime-setup '(slime-fancy slime-banner slime-tramp slime-presentations slime-asdf))
-(setq slime-protocol-version 'ignore) 
+(setq slime-protocol-version 'ignore)
 
 ;; quicklisp support
 (when (file-exists-p "~/quicklisp/slime-helper.el")
@@ -375,4 +379,3 @@
       "Prevent y-or-n-p from activating a dialog"
       (let ((use-dialog-box nil))
         ad-do-it))))
-
