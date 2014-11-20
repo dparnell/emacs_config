@@ -364,6 +364,10 @@
 
 (add-hook 'coffee-mode-hook 'flymake-coffeescript-load)
 
+;; add dockerfile-mode
+(add-to-list 'load-path "~/.emacs.d/dockerfile-mode/")
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
 
 (when (file-exists-p "~/.emacs.d/local-settings.el")
     (load-file "~/.emacs.d/local-settings.el"))
