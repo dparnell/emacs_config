@@ -66,7 +66,8 @@
 (if (not (equal "" rdebug-emacs-path))
     (progn
       (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-      (require 'rdebug)))
+      (require 'rdebug)
+      (require 'rdebug-remote)))
 
 ;; Use spaces instead of TABs
 (setq indent-tabs-mode nil)
@@ -299,7 +300,7 @@
 ;; setup load-path and autoloads
 (add-to-list 'load-path "~/.emacs.d/slime")
 (require 'slime-autoloads)
- 
+
 ;; Set your lisp system and, optionally, some contribs
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
