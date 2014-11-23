@@ -8,23 +8,33 @@
 (if (< emacs-major-version 23)
     (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
 
+;; solarized colour scheme
+(message "Loading Solarized theme")
+(defun load-my-theme ()
+  (if (< emacs-major-version 24)
+      (progn
+        (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
+        (require 'color-theme-solarized)
+        (color-theme-solarized-dark))
+      (progn
+        (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
+        (load-theme 'solarized-dark t))))
+
+(load-my-theme)
+
+(defvar reload-theme-on-text-terminals t)
 ;; make sure that if we open a frame on a terminal without graphical capabilities we don't set the background colour
 (defun on-frame-open (frame)
   (if (not (display-graphic-p frame))
-      (set-face-background 'default "unspecified-bg" frame)))
+      (if reload-theme-on-text-terminals
+          (progn
+            (message "Reloading theme")
+            (run-with-idle-timer 1 nil 'load-my-theme))
+          (progn
+            (message "Clearing out the background colour")
+            (set-face-background 'default "unspecified-bg" frame)))))
 (on-frame-open (selected-frame))
 (add-hook 'after-make-frame-functions 'on-frame-open)
-
-;; solarized colour scheme
-(message "Loading Solarized theme")
-(if (< emacs-major-version 24)
-    (progn
-      (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
-      (require 'color-theme-solarized)
-      (color-theme-solarized-dark))
-  (progn
-    (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
-    (load-theme 'solarized-dark t)))
 
 ;; load powerline
 (message "Loading powerline")
@@ -59,10 +69,9 @@
 (setq load-path (append load-path '("~/.emacs.d/ruby-mode")))
 
 (message "Loading debug support")
-(setq load-path (append load-path '("~/.emacs.d")))
-(require 'cl-lib)
+(load-file "~/.emacs.d/cl-lib.el")
 
-(setq rdebug-emacs-path (shell-command-to-string "ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+(setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
 (if (not (equal "" rdebug-emacs-path))
     (progn
       (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
@@ -142,6 +151,11 @@
 (message "Loading rspec")
 (setq load-path (append load-path '("~/.emacs.d/rspec-mode")))
 (require 'rspec-mode)
+
+;; minimap
+(message "Loading minimap")
+(setq load-path (append load-path '("~/.emacs.d/emacs-minimap")))
+(require 'minimap)
 
 ;; Display the current date and time in the status bar
 (setq display-time-day-and-date t
@@ -302,8 +316,13 @@
 (require 'slime-autoloads)
 
 ;; Set your lisp system and, optionally, some contribs
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
-(setq slime-contribs '(slime-fancy))
+(setq inferior-lisp-program "/usr/local/bin/sbcl"
+      lisp-indent-function 'common-lisp-indent-function
+      slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+      slime-startup-animation t)
+(require 'slime-autoloads)
+(slime-setup '(slime-fancy slime-banner slime-tramp slime-presentations slime-asdf))
+(setq slime-protocol-version 'ignore)
 
 ;; quicklisp support
 (when (file-exists-p "~/quicklisp/slime-helper.el")
@@ -356,6 +375,22 @@
 
 (add-hook 'coffee-mode-hook 'flymake-coffeescript-load)
 
+;; add dockerfile-mode
+(add-to-list 'load-path "~/.emacs.d/dockerfile-mode/")
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
 
 (when (file-exists-p "~/.emacs.d/local-settings.el")
     (load-file "~/.emacs.d/local-settings.el"))
+
+;; stop popups from breaking Emacs
+(if (string-equal "darwin" (symbol-name system-type))
+  (progn
+    (defadvice yes-or-no-p (around prevent-dialog activate)
+      "Prevent yes-or-no-p from activating a dialog"
+      (let ((use-dialog-box nil))
+        ad-do-it))
+    (defadvice y-or-n-p (around prevent-dialog-yorn activate)
+      "Prevent y-or-n-p from activating a dialog"
+      (let ((use-dialog-box nil))
+        ad-do-it))))
