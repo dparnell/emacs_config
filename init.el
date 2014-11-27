@@ -374,6 +374,28 @@
 
 (add-hook 'coffee-mode-hook 'flymake-coffeescript-load)
 
+;; load rainbow delimiters
+(message "Loading rainbow delimiters")
+(load "~/.emacs.d/rainbow-delimiters.el")
+
+;; load paredit
+(message "Loading paredit")
+(load "~/.emacs.d/paredit.el")
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+
+(defun lets-edit-some-lisp ()
+  (enable-paredit-mode)
+  (rainbow-delimiters-mode)
+  (show-paren-mode))
+
+;; now add on the hooks to set up for lisp editing
+(add-hook 'emacs-lisp-mode-hook       #'lets-edit-some-lisp)
+(add-hook 'eval-expression-minibuffer-setup-hook #'lets-edit-some-lisp)
+(add-hook 'ielm-mode-hook             #'lets-edit-some-lisp)
+(add-hook 'lisp-mode-hook             #'lets-edit-some-lisp)
+(add-hook 'lisp-interaction-mode-hook #'lets-edit-some-lisp)
+(add-hook 'scheme-mode-hook           #'lets-edit-some-lisp)
+
 ;; add dockerfile-mode
 (add-to-list 'load-path "~/.emacs.d/dockerfile-mode/")
 (require 'dockerfile-mode)
