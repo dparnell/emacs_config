@@ -75,7 +75,8 @@
 (if (not (equal "" rdebug-emacs-path))
     (progn
       (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-      (require 'rdebug)))
+      (require 'rdebug)
+      (require 'rdebug-remote)))
 
 ;; Use spaces instead of TABs
 (setq indent-tabs-mode nil)
