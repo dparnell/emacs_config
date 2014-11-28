@@ -62,11 +62,13 @@
 (setq load-path (append load-path '("~/.emacs.d")))
 (require 'cl-lib)
 
-(setq rdebug-emacs-path (shell-command-to-string "ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
-(if (not (equal "" rdebug-emacs-path))
-    (progn
-      (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-      (require 'rdebug)))
+(if (not (string-equal "windows-nt" (symbol-name system-type)))
+  (progn
+    (setq rdebug-emacs-path (shell-command-to-string "ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+    (if (not (equal "" rdebug-emacs-path))
+      (progn
+        (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
+        (require 'rdebug)))))
 
 ;; Use spaces instead of TABs
 (setq indent-tabs-mode nil)

@@ -1,0 +1,57 @@
+;s
+cd
+ls
+cd
+ls
+cd GitHub/
+ls
+cd ..
+ls
+pwd
+cd Atheros/
+ls
+cd Session/
+ls
+cd ..
+ls
+cd ..
+ls
+cd Microsoft/
+ls
+cd ..
+cd Macromedia/
+ls
+cd Flash\ Player/
+ls
+cd ../..
+ls
+cd Adobe/
+ls
+cd Flash\ Player/
+ls
+cd ..
+cd
+pwd
+ls
+cd ..
+ls
+cd ..
+ls
+cd Documents/
+ls
+cd GitHub/
+ls
+cd bin2h/
+ls
+exit
+ls
+exit
+(symbol-name system-type)
+cd
+ls -al
+cd .emacs.d/
+ls
+git pull
+pwd
+cd
+pwd
