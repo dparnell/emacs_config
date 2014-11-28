@@ -8,3 +8,4 @@ private.el
 ede-projects.el
 local-settings.el
 elpa
+eshell
