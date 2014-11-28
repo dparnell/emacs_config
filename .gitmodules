@@ -53,3 +53,9 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "slime"]
 	path = slime
 	url = https://github.com/slime/slime.git
+[submodule "emacs-minimap"]
+	path = emacs-minimap
+	url = https://github.com/kperusko/emacs-minimap.git
+[submodule "dockerfile-mode"]
+	path = dockerfile-mode
+	url = https://github.com/spotify/dockerfile-mode.git
