@@ -398,6 +398,11 @@
 (load "~/.emacs.d/paredit.el")
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 
+;; google protobuf mode
+(message "Loading protobuf-mode")
+(load "~/.emacs.d/protobuf-mode.el")
+(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+
 (defun lets-edit-some-lisp ()
   (enable-paredit-mode)
   (rainbow-delimiters-mode)
