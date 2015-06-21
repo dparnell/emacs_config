@@ -435,3 +435,10 @@
       "Prevent y-or-n-p from activating a dialog"
       (let ((use-dialog-box nil))
         ad-do-it))))
+
+;; add company-mode
+(message "Adding company mode")
+(add-to-list 'load-path "~/.emacs.d/company-mode")
+(autoload 'company-mode "company" nil t)
+(add-hook 'after-init-hook 'global-company-mode)
+

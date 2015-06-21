@@ -63,3 +63,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 	path = multi-web-mode
 	url = https://github.com/fgallina/multi-web-mode.git
 
+[submodule "company-mode"]
+	path = company-mode
+	url = https://github.com/company-mode/company-mode.git
