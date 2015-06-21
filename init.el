@@ -398,6 +398,11 @@
 (load "~/.emacs.d/paredit.el")
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 
+;; google protobuf mode
+(message "Loading protobuf-mode")
+(load "~/.emacs.d/protobuf-mode.el")
+(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+
 (defun lets-edit-some-lisp ()
   (enable-paredit-mode)
   (rainbow-delimiters-mode)
@@ -430,4 +435,10 @@
       "Prevent y-or-n-p from activating a dialog"
       (let ((use-dialog-box nil))
         ad-do-it))))
+
+;; add company-mode
+(message "Adding company mode")
+(add-to-list 'load-path "~/.emacs.d/company-mode")
+(autoload 'company-mode "company" nil t)
+(add-hook 'after-init-hook 'global-company-mode)
 
