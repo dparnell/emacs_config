@@ -83,14 +83,14 @@
 (message "Loading debug support")
 (load-file "~/.emacs.d/cl-lib.el")
 
-(if (not (string-equal "windows-nt" (symbol-name system-type)))
-  (progn
-    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
-    (if (not (equal "" rdebug-emacs-path))
-	(progn
-	  (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-	  (require 'rdebug)
-	  (require 'rdebug-remote)))))
+;(if (not (string-equal "windows-nt" (symbol-name system-type)))
+;  (progn
+;    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+;    (if (not (equal "" rdebug-emacs-path))
+;	(progn
+;	  (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
+;	  (require 'rdebug)
+;	  (require 'rdebug-remote)))))
 
 ;; Use spaces instead of TABs
 (setq indent-tabs-mode nil)
@@ -430,3 +430,4 @@
       "Prevent y-or-n-p from activating a dialog"
       (let ((use-dialog-box nil))
         ad-do-it))))
+
