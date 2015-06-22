@@ -439,6 +439,6 @@
 ;; add company-mode
 (message "Adding company mode")
 (add-to-list 'load-path "~/.emacs.d/company-mode")
-(autoload 'company-mode "company" nil t)
+(load "company.el")
 (add-hook 'after-init-hook 'global-company-mode)
 
