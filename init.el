@@ -316,13 +316,12 @@
              (setq c-basic-indent 2)
              (setq tab-width 2)))
 
-
 ;; auto-complete support
-(message "Setting up auto-complete stuff")
-(add-to-list 'load-path "~/.emacs.d/popup-el")
-(add-to-list 'load-path "~/.emacs.d/auto-complete/")
-(require 'auto-complete-config)
-(ac-config-default)
+;;(message "Setting up auto-complete stuff")
+;;(add-to-list 'load-path "~/.emacs.d/popup-el")
+;;(add-to-list 'load-path "~/.emacs.d/auto-complete/")
+;;(require 'auto-complete-config)
+;;(ac-config-default)
 
 ;; SLIME
 ;; setup load-path and autoloads
@@ -441,4 +440,3 @@
 (add-to-list 'load-path "~/.emacs.d/company-mode")
 (load "company.el")
 (add-hook 'after-init-hook 'global-company-mode)
-
