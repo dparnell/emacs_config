@@ -440,3 +440,12 @@
 (add-to-list 'load-path "~/.emacs.d/company-mode")
 (load "company.el")
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; add markdown mode
+(message "Adding markdown mode")
+(add-to-list 'load-path "~/.emacs.d/markdown-mode")
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))

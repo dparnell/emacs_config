@@ -66,3 +66,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "company-mode"]
 	path = company-mode
 	url = https://github.com/company-mode/company-mode.git
+[submodule "markdown-mode"]
+	path = markdown-mode
+	url = git://jblevins.org/git/markdown-mode.git
