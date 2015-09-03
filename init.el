@@ -16,6 +16,10 @@
   (package-refresh-contents)
   (package-install 'clojure-mode))
 
+(unless (package-installed-p 'alchemist)
+  (package-refresh-contents)
+  (package-install 'alchemist))
+
 ;; emacs22 setup
 (if (< emacs-major-version 23)
     (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
