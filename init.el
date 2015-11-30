@@ -20,6 +20,10 @@
   (package-refresh-contents)
   (package-install 'alchemist))
 
+;;(unless (package-installed-p 'sly)
+;;  (package-refresh-contents)
+;;  (package-install 'sly))
+
 ;; emacs22 setup
 (if (< emacs-major-version 23)
     (setq load-path (append (append load-path '("~/.emacs.d/nxml/")) '("~/.emacs.d/ruby-mode"))))
@@ -424,9 +428,6 @@
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
 
-(when (file-exists-p "~/.emacs.d/local-settings.el")
-    (load-file "~/.emacs.d/local-settings.el"))
-
 ;; stop popups from breaking Emacs
 (if (string-equal "darwin" (symbol-name system-type))
   (progn
@@ -453,3 +454,8 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; lastly load any local settings
+(when (file-exists-p "~/.emacs.d/local-settings.el")
+  (message "Loading local settings")
+  (load-file "~/.emacs.d/local-settings.el"))
