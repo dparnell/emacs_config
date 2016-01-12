@@ -10,15 +10,18 @@
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+(message "Loading required packages")
 (package-initialize)
-
-(unless (package-installed-p 'clojure-mode)
-  (package-refresh-contents)
-  (package-install 'clojure-mode))
-
-(unless (package-installed-p 'alchemist)
-  (package-refresh-contents)
-  (package-install 'alchemist))
+(let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist) (list)))
+       (common-packages (list 'clojure-mode 'iedit 'wgrep)) 
+       (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-4-or-greater))))))
+  (if to-install
+    (progn
+      (message "There are missing packages: %s" to-install)
+      (package-refresh-contents)
+      (mapcar (lambda (x) (message "Installing package %s" (symbol-name x)) (package-install x)) to-install))
+    (message "All packaged are already installed")))
 
 ;;(unless (package-installed-p 'sly)
 ;;  (package-refresh-contents)
