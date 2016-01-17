@@ -1,7 +1,3 @@
-[submodule "coffee-mode"]
-path = coffee-mode
-url = git://github.com/defunkt/coffee-mode.git
-
 [submodule "cucumber.el"]
 path = cucumber.el
 url = git://github.com/michaelklishin/cucumber.el.git
@@ -10,13 +6,6 @@ url = git://github.com/michaelklishin/cucumber.el.git
 path = rhtml
 url = git://github.com/eschulte/rhtml.git
 
-[submodule "scss-mode"]
-path = scss-mode
-url = git://github.com/antonj/scss-mode.git
-
-[submodule "yaml-mode"]
-path = yaml-mode
-url = git://github.com/yoshiki/yaml-mode.git
 [submodule "ensime"]
 	path = ensime
 	url = git://github.com/aemoncannon/ensime.git
@@ -47,9 +36,6 @@ url = git://github.com/yoshiki/yaml-mode.git
 [submodule "flymake-jslint"]
 	path = flymake-jslint
 	url = git://github.com/purcell/flymake-jslint
-[submodule "web-mode"]
-	path = web-mode
-	url = https://github.com/fxbois/web-mode.git
 [submodule "slime"]
 	path = slime
 	url = https://github.com/slime/slime.git

@@ -14,18 +14,15 @@
 (message "Loading required packages")
 (package-initialize)
 (let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist) (list)))
-       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit))
-       (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-4-or-greater))))))
+       (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode) (list)))
+       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit 'web-mode 'scss-mode 'yaml-mode))
+       (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
   (if to-install
     (progn
       (message "There are missing packages: %s" to-install)
       (package-refresh-contents)
       (mapcar (lambda (x) (message "Installing package %s" (symbol-name x)) (package-install x)) to-install))
     (message "All packaged are already installed")))
-
-;;(unless (package-installed-p 'sly)
-;;  (package-refresh-contents)
-;;  (package-install 'sly))
 
 ;; emacs22 setup
 (if (< emacs-major-version 23)
@@ -218,16 +215,13 @@
 ;; Coffee script mode - Emacs 24 and higher required
 (if (> emacs-major-version 23)
     (progn
-	(message "Loading coffee-mode")
-        (add-to-list 'load-path "~/.emacs.d/coffee-mode")
-        (require 'coffee-mode)
-        (custom-set-variables '(coffee-tab-width 2))
-        (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-        (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))))
+      (message "Loading coffee-mode")
+      (custom-set-variables '(coffee-tab-width 2))
+      (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+      (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))))
 
 ;; SCSS mode
 (message "Loading scss-mode")
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/scss-mode"))
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
@@ -239,12 +233,10 @@
 
 ;; Yaml mode
 (message "Loading yaml-mode")
-(setq load-path (append load-path '("~/.emacs.d/yaml-mode")))
-(require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-hook 'yaml-mode-hook
           '(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; Textile mode
 (message "Loading textile-mode")
