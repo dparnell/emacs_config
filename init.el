@@ -14,7 +14,7 @@
 (message "Loading required packages")
 (package-initialize)
 (let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist) (list)))
-       (common-packages (list 'clojure-mode 'iedit 'wgrep)) 
+       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit))
        (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-4-or-greater))))))
   (if to-install
     (progn
@@ -106,11 +106,6 @@
 ;; Use spaces instead of TABs
 (setq indent-tabs-mode nil)
 (setq c-indent-level 2)
-
-;; Magit
-(message "Loading magit")
-(setq load-path (append load-path '("~/.emacs.d/magit")))
-(require 'magit)
 
 ;; Special rails file
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
@@ -352,8 +347,7 @@
 (when (file-exists-p "~/quicklisp/slime-helper.el")
   (progn
     (message "Loading quick-lisp support")
-    (load (expand-file-name "~/quicklisp/slime-helper.el"))
-    (setq inferior-lisp-program "sbcl")))
+    (load (expand-file-name "~/quicklisp/slime-helper.el"))))
 
 ;; add flymake support for js
 (message "Loading flymake-easy")
