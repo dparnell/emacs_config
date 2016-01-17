@@ -15,14 +15,15 @@
 (package-initialize)
 (let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist) (list)))
        (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode) (list)))
-       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit 'web-mode 'scss-mode 'yaml-mode))
+       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit 'web-mode 'scss-mode 'yaml-mode 'company))
        (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
   (if to-install
-    (progn
-      (message "There are missing packages: %s" to-install)
-      (package-refresh-contents)
-      (mapcar (lambda (x) (message "Installing package %s" (symbol-name x)) (package-install x)) to-install))
-    (message "All packaged are already installed")))
+      (progn
+        (switch-to-buffer "*Message-Log*")
+        (message "There are missing packages: %s" to-install)
+        (package-refresh-contents)
+        (mapcar (lambda (x) (message "Installing package %s" (symbol-name x)) (package-install x)) to-install))
+      (message "All packaged are already installed")))
 
 ;; emacs22 setup
 (if (< emacs-major-version 23)
@@ -431,8 +432,6 @@
 
 ;; add company-mode
 (message "Adding company mode")
-(add-to-list 'load-path "~/.emacs.d/company-mode")
-(load "company.el")
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; add markdown mode

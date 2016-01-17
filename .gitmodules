@@ -2,10 +2,6 @@
 path = cucumber.el
 url = git://github.com/michaelklishin/cucumber.el.git
 
-[submodule "rhtml"]
-path = rhtml
-url = git://github.com/eschulte/rhtml.git
-
 [submodule "ensime"]
 	path = ensime
 	url = git://github.com/aemoncannon/ensime.git
@@ -49,9 +45,6 @@ url = git://github.com/eschulte/rhtml.git
 	path = multi-web-mode
 	url = https://github.com/fgallina/multi-web-mode.git
 
-[submodule "company-mode"]
-	path = company-mode
-	url = https://github.com/company-mode/company-mode.git
 [submodule "markdown-mode"]
 	path = markdown-mode
 	url = git://jblevins.org/git/markdown-mode.git
