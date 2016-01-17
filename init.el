@@ -112,8 +112,6 @@
 
 ;; Web-mode
 (message "Loading web-mode")
-(setq load-path (cons (expand-file-name "~/.emacs.d/web-mode") load-path))
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
