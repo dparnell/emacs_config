@@ -13,9 +13,9 @@
 
 (message "Loading required packages")
 (package-initialize)
-(let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist) (list)))
-       (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode) (list)))
-       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit 'web-mode 'scss-mode 'yaml-mode 'company))
+(let* ((packages-for-emacs-24-4-or-greater (if (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3))) (list 'alchemist 'cider) (list)))
+       (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company) (list)))
+       (common-packages (list 'clojure-mode 'iedit 'wgrep 'magit 'web-mode 'scss-mode 'yaml-mode))
        (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
   (if to-install
       (progn
