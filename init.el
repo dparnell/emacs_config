@@ -4,6 +4,9 @@
       (setenv "PATH" (concat "/usr/local/bin:/usr/local/sbin:" (getenv "PATH")))
       (setq exec-path (append exec-path '("/usr/local/bin" "/usr/local/sbin")))))
 
+(if (not (getenv "LANG"))
+  (setenv "LANG" "en_AU.UTF-8"))
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
