@@ -10,3 +10,4 @@ local-settings.el
 elpa
 eshell
 bookmarks
+url
