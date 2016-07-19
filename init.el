@@ -7,6 +7,9 @@
 (if (not (getenv "LANG"))
   (setenv "LANG" "en_AU.UTF-8"))
 
+;; turn off the toolbar
+(tool-bar-mode -1)
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
