@@ -7,6 +7,14 @@
 (if (not (getenv "LANG"))
   (setenv "LANG" "en_AU.UTF-8"))
 
+;; add in some keyboard mappings
+
+(global-set-key (kbd "M-b") nil)
+(global-set-key (kbd "M-b <up>") 'windmove-up)
+(global-set-key (kbd "M-b <down>") 'windmove-down)
+(global-set-key (kbd "M-b <left>") 'windmove-left)
+(global-set-key (kbd "M-b <right>") 'windmove-right)
+
 ;; turn off the toolbar
 (tool-bar-mode -1)
 
@@ -128,6 +136,7 @@
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.dtl\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.?html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html.eex?\\'" . web-mode))
 
 ;; load rails-reloaded
 (message "Loading rails-reloaded")
@@ -447,7 +456,14 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;; lastly load any local settings
+;; load any local settings
 (when (file-exists-p "~/.emacs.d/local-settings.el")
   (message "Loading local settings")
   (load-file "~/.emacs.d/local-settings.el"))
+
+;; finally load any customizations
+(setq custom-file "~/.emacs.d/custom.el")
+(when (file-exists-p "~/.emacs.d/custom.el")
+  (message "Loading custom settings")
+  (load custom-file))
+
