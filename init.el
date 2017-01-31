@@ -10,6 +10,7 @@
 ;; add in some keyboard mappings
 
 (global-set-key (kbd "M-b") nil)
+(global-set-key (kbd "M-b M-b") 'buffer-menu)
 (global-set-key (kbd "M-b <up>") 'windmove-up)
 (global-set-key (kbd "M-b <down>") 'windmove-down)
 (global-set-key (kbd "M-b <left>") 'windmove-left)
@@ -466,4 +467,3 @@
 (when (file-exists-p "~/.emacs.d/custom.el")
   (message "Loading custom settings")
   (load custom-file))
-
