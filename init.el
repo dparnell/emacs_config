@@ -29,9 +29,9 @@
 (message "Loading required packages")
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck-elixir 'flycheck-clojure) (list)))
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'clojure-mode 'alchemist 'cider 'magit 'flycheck-elixir 'flycheck-clojure) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company) (list)))
-         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode))
+         (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
     (if to-install
         (progn
@@ -358,7 +358,11 @@
       (load (expand-file-name "~/quicklisp/slime-helper.el"))))
 
   (if is-emacs-24-4-or-greater
-      (global-flycheck-mode)
+      (progn 
+        (global-flycheck-mode)
+        ;; add in Flycheck stuff
+        (require 'flycheck-elixir)
+        (add-hook 'elixir-mode-hook 'flycheck-mode))
       (progn
         ;; add flymake support for js
         (message "Loading flymake-easy")
@@ -452,9 +456,6 @@
   (message "Adding company mode")
   (add-hook 'after-init-hook 'global-company-mode)
 
-  ;; add in Flycheck stuff
-  (require 'flycheck-elixir)
-  (add-hook 'elixir-mode-hook 'flycheck-mode)
 
   ;; add markdown mode
   (message "Adding markdown mode")
