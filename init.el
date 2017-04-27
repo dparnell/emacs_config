@@ -361,7 +361,11 @@
       (load (expand-file-name "~/quicklisp/slime-helper.el"))))
 
   (if is-emacs-24-4-or-greater
-      (global-flycheck-mode)
+      (progn
+        (global-flycheck-mode)
+        ;; add in Flycheck stuff
+        (require 'flycheck-elixir)
+        (add-hook 'elixir-mode-hook 'flycheck-mode))
       (progn
         ;; add flymake support for js
         (message "Loading flymake-easy")
@@ -464,9 +468,6 @@
 
   (add-hook 'after-init-hook 'setup-company-mode)
 
-  ;; add in Flycheck stuff
-  (require 'flycheck-elixir)
-  (add-hook 'elixir-mode-hook 'flycheck-mode)
 
   ;; add markdown mode
   (message "Adding markdown mode")
