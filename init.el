@@ -16,8 +16,6 @@
 (global-set-key (kbd "M-b <left>") 'windmove-left)
 (global-set-key (kbd "M-b <right>") 'windmove-right)
 
-;; turn off the toolbar
-(tool-bar-mode -1)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -69,7 +67,10 @@
               (run-with-idle-timer 1 nil 'load-my-theme))
           (progn
             (message "Clearing out the background colour")
-            (set-face-background 'default "unspecified-bg" frame)))))
+            (set-face-background 'default "unspecified-bg" frame)))
+
+        (tool-bar-mode -1)))
+
   (on-frame-open (selected-frame))
   (add-hook 'after-make-frame-functions 'on-frame-open)
 
