@@ -28,7 +28,7 @@
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure) (list)))
-         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company) (list)))
+         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet) (list)))
          (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
     (if to-install
@@ -469,6 +469,9 @@
 
   (add-hook 'after-init-hook 'setup-company-mode)
 
+  ;; turn on yasnippets
+  (yas-global-mode 1)
+  (global-set-key (kbd "C-c y") 'company-yasnippet)
 
   ;; add markdown mode
   (message "Adding markdown mode")

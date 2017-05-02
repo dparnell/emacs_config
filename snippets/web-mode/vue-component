@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: vuecomponent
+# key: vuecomponent
+# --
+<template>
+  <div>component body</div>
+</template>
+
+<script>
+ export default {
+     props: ["foo", "bar", "baz"],
+     data() {
+            return { something: true };
+     },
+     methods: {
+       myMethod() {
+         console.info("NOTHING TO SEE HERE");
+       }
+     },
+     components: {}
+ };
+</script>
+
+<style scoped lang="sass">
+</style>
