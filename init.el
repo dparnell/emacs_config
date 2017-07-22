@@ -29,7 +29,7 @@
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet) (list)))
-         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime))
+         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
     (if to-install
         (progn
@@ -293,8 +293,6 @@
   (message "Loading circe")
   (autoload 'circe "circe" "Connect to an IRC server" t)
 
-  (add-to-list 'load-path "~/.emacs.d/circe/lisp")
-
   ;; This defines the password variables below
   (when (file-exists-p "~/.emacs.d/private.el")
     (progn
@@ -311,13 +309,7 @@
   (eval-after-load "circe"
     '(progn
       (require 'lui-irc-colors)
-      (add-to-list 'lui-pre-output-hook 'lui-irc-colors)
-      (add-to-list 'circe-receive-message-functions
-       'fc-got-something)))
-
-  (defun fc-got-something (nick user host command args)
-    ;;  (beep)
-    )
+      (add-to-list 'lui-pre-output-hook 'lui-irc-colors)))
 
   (defun irc ()
     "Connect to IRC."
@@ -438,8 +430,6 @@
   (add-hook 'scheme-mode-hook           #'lets-edit-some-lisp)
 
   ;; add dockerfile-mode
-  (add-to-list 'load-path "~/.emacs.d/dockerfile-mode/")
-  (require 'dockerfile-mode)
   (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
 
   ;; stop popups from breaking Emacs

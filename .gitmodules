@@ -32,9 +32,6 @@ url = git://github.com/michaelklishin/cucumber.el.git
 [submodule "emacs-minimap"]
 	path = emacs-minimap
 	url = https://github.com/kperusko/emacs-minimap.git
-[submodule "dockerfile-mode"]
-	path = dockerfile-mode
-	url = https://github.com/spotify/dockerfile-mode.git
 [submodule "multi-web-mode"]
 	path = multi-web-mode
 	url = https://github.com/fgallina/multi-web-mode.git
