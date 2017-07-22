@@ -30,7 +30,7 @@
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet)
                                                                           (list 'flymake-easy 'flymake-jslint)))
-         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode))
+         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
     (if to-install
         (progn
@@ -259,7 +259,6 @@
 
   ;; PHP support
   (message "Loading php-mode")
-  (setq load-path (append load-path '("~/.emacs.d/php-mode")))
   (require 'php-mode)
 
   ;; ecb
