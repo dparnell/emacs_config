@@ -7,9 +7,6 @@
 [submodule "powerline"]
 	path = powerline
 	url = git://github.com/dparnell/powerline.git
-[submodule "popup-el"]
-	path = popup-el
-	url = git://github.com/auto-complete/popup-el.git
 [submodule "emacs-minimap"]
 	path = emacs-minimap
 	url = https://github.com/kperusko/emacs-minimap.git
