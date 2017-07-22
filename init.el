@@ -171,19 +171,6 @@
 
   ;; Scala stuff
   (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
-  ;; ensime - scala support
-  ;;
-  ;; Before ensime will work it is necessary to build it from source
-  ;; Go into the ensime directory and enter the following command
-  ;;
-  ;;     sbt stage
-  ;;
-  ;; This will build ensime :)
-  ;;
-  ;; (if (file-accessible-directory-p "~/.emacs.d/ensime/dist/elisp/") (
-  ;;  (add-to-list 'load-path "~/.emacs.d/ensime/dist/elisp/")
-  ;; (require 'ensime)
-  ;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
   ;; rspec
   (message "Loading rspec")
