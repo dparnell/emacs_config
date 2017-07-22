@@ -11,9 +11,6 @@ url = git://github.com/michaelklishin/cucumber.el.git
 [submodule "emacs-color-theme-solarized"]
 	path = emacs-color-theme-solarized
 	url = git://github.com/sellout/emacs-color-theme-solarized.git
-[submodule "circe"]
-	path = circe
-	url = git://github.com/jorgenschaefer/circe.git
 [submodule "ecb"]
 	path = ecb
 	url = git://github.com/emacsmirror/ecb.git
@@ -32,9 +29,6 @@ url = git://github.com/michaelklishin/cucumber.el.git
 [submodule "flymake-jslint"]
 	path = flymake-jslint
 	url = git://github.com/purcell/flymake-jslint
-[submodule "slime"]
-	path = slime
-	url = https://github.com/slime/slime.git
 [submodule "emacs-minimap"]
 	path = emacs-minimap
 	url = https://github.com/kperusko/emacs-minimap.git
