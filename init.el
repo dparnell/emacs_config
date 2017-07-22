@@ -27,7 +27,7 @@
 (message "Loading required packages")
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure) (list)))
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet)
                                                                           (list 'flymake-easy 'flymake-jslint)))
          (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode))
@@ -154,15 +154,14 @@
   ;; scala-mode
   (if (or (< emacs-major-version 24) (and (= emacs-major-version 24) (< emacs-minor-version 2)))
       (progn
-        (let ((path "~/.emacs.d/scala-mode"))
+        (let ((path "~/.emacs.d/scala-mode-old"))
           (message "Loading scala-mode")
           (setq load-path (cons path load-path))
           (load "scala-mode-auto.el")
           (require 'scala-mode)))
     (progn
-      (message "Loading scala-mode2")
-      (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
-      (require 'scala-mode2)))
+      (message "Loading scala-mode")
+      (require 'scala-mode)))
 
   (defun scala-turnoff-indent-tabs-mode ()
     (setq indent-tabs-mode nil))

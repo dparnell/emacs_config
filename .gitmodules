@@ -1,9 +1,6 @@
 [submodule "emacs-color-theme-solarized"]
 	path = emacs-color-theme-solarized
 	url = git://github.com/sellout/emacs-color-theme-solarized.git
-[submodule "scala-mode2"]
-	path = scala-mode2
-	url = git://github.com/hvesalai/scala-mode2.git
 [submodule "powerline"]
 	path = powerline
 	url = git://github.com/dparnell/powerline.git
