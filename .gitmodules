@@ -20,6 +20,3 @@
 	path = multi-web-mode
 	url = https://github.com/fgallina/multi-web-mode.git
 
-[submodule "markdown-mode"]
-	path = markdown-mode
-	url = git://jblevins.org/git/markdown-mode.git

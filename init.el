@@ -30,7 +30,7 @@
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet)
                                                                           (list 'flymake-easy 'flymake-jslint)))
-         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb))
+         (common-packages (list 'clojure-mode 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
     (if to-install
         (progn
@@ -447,7 +447,6 @@
 
   ;; add markdown mode
   (message "Adding markdown mode")
-  (add-to-list 'load-path "~/.emacs.d/markdown-mode")
   (autoload 'markdown-mode "markdown-mode"
     "Major mode for editing Markdown files" t)
   (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
