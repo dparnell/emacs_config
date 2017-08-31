@@ -333,7 +333,18 @@
         (global-flycheck-mode)
         ;; add in Flycheck stuff
         (require 'flycheck-elixir)
-        (add-hook 'elixir-mode-hook 'flycheck-mode))
+        (add-hook 'elixir-mode-hook 'flycheck-mode)
+
+        ;; set up magit colours
+        (custom-set-faces
+         ;; other faces
+         '(magit-diff-added ((((type tty)) (:foreground "green"))))
+         '(magit-diff-added-highlight ((((type tty)) (:foreground "LimeGreen"))))
+         '(magit-diff-context-highlight ((((type tty)) (:foreground "default"))))
+         '(magit-diff-file-heading ((((type tty)) nil)))
+         '(magit-diff-removed ((((type tty)) (:foreground "red"))))
+         '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
+         '(magit-section-highlight ((((type tty)) nil)))))
       (progn
         ;; add flymake support for js
         (message "Loading flymake-easy")
