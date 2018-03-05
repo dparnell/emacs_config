@@ -21,6 +21,8 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; save the recect files every now and again
+(run-at-time nil (* 5 60) 'recentf-save-list)
 
 (require 'package)
 (add-to-list 'package-archives
