@@ -82,9 +82,15 @@
   (on-frame-open (selected-frame))
   (add-hook 'after-make-frame-functions 'on-frame-open)
 
-  ;; install swiper
+  ;; install swiper and ivy
   (if (> emacs-major-version 23)
-      (global-set-key "\C-s" 'swiper))
+      (progn
+        (global-set-key "\C-s" 'swiper)
+        (ivy-mode)))
+
+  ;; enable alchemist
+  (if (package-installed-p 'alchemist)
+      (alchemist-mode))
 
   ;; load powerline
   (message "Loading powerline")
