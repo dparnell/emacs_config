@@ -39,6 +39,7 @@
                                                                           (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
+
     (if to-install
         (progn
           (switch-to-buffer "*Message-Log*")
@@ -90,7 +91,8 @@
 
   ;; enable alchemist
   (if (package-installed-p 'alchemist)
-      (alchemist-mode))
+      (if (not (string-equal "windows-nt" (symbol-name system-type)))
+	  (alchemist-mode)))
 
   ;; load powerline
   (message "Loading powerline")
