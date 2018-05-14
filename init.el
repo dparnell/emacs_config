@@ -35,7 +35,7 @@
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode) (list)))
-         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper)
+         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper 'vue-mode 'lsp-mode 'lsp-ui 'company-lsp)
                                                                           (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
@@ -129,14 +129,14 @@
   (message "Loading debug support")
   (load-file "~/.emacs.d/cl-lib.el")
 
-                                        ;(if (not (string-equal "windows-nt" (symbol-name system-type)))
-                                        ;  (progn
-                                        ;    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
-                                        ;    (if (not (equal "" rdebug-emacs-path))
-                                        ; (progn
-                                        ;   (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-                                        ;   (require 'rdebug)
-                                        ;   (require 'rdebug-remote)))))
+  ;;(if (not (string-equal "windows-nt" (symbol-name system-type)))
+  ;;  (progn
+  ;;    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+  ;;    (if (not (equal "" rdebug-emacs-path))
+  ;; (progn
+  ;;   (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
+  ;;   (require 'rdebug)
+  ;;   (require 'rdebug-remote)))))
 
   ;; Use spaces instead of TABs
   (setq indent-tabs-mode nil)
@@ -353,6 +353,51 @@
         ;; add in Flycheck stuff
         (require 'flycheck-elixir)
         (add-hook 'elixir-mode-hook 'flycheck-mode)
+
+        ;; configure vue-mode
+        (require 'vue-mode)
+        ;;(add-to-list 'vue-mode-hook #'smartparens-mode)
+
+        ;; add in LSP
+        (require 'lsp-mode)
+        (require 'lsp-ui)
+        (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+        ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+        (when (file-exists-p "/usr/bin/vls")
+          (progn
+            ;; use a patched version of lsp-vue until the official one is fixed
+            (load-file "~/.emacs.d/lsp-vue.el")
+            (require 'lsp-vue)
+            (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
+            (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+
+            ;; (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
+            ;; (defconst lsp-vue--get-root (lsp-make-traverser #'(lambda (dir)
+            ;;                                                     (directory-files dir nil "package.json"))))
+
+            ;; (lsp-define-stdio-client lsp-vue "vue"
+            ;;  lsp-vue--get-root '("/usr/bin/vls"))
+
+            ;;  (defun lsp-vue--set-configuration ()
+            ;;  "Send project config to lsp-server"
+            ;;  (lsp--set-configuration (lsp-vue--vetur-configuration '(vetur html))))
+
+            ;;  (add-hook 'lsp-after-initialize-hook 'lsp-vue--set-configuration)
+
+            ;;  (defun lsp-vue-mmm-enable ()
+            ;;    "Enable lsp-vue for all major-modes supported by ‘vue-mode’."
+            ;;    (interactive)
+            ;;    (lsp-vue-enable)
+            ;;    (when (and lsp-enable-flycheck (featurep 'lsp-flycheck) (featurep 'vue-mode))
+            ;;      (require 'vue-mode)
+            ;;      (dolist (mode-settings vue-modes)
+            ;;        (lsp-flycheck-add-mode (plist-get mode-settings ':mode)))))
+             ))
+
+
+        (require 'company-lsp)
+        (push 'company-lsp company-backends)
 
         ;; set up magit colours
         (custom-set-faces
