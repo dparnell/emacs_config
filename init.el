@@ -35,8 +35,8 @@
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode) (list)))
-         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper 'vue-mode 'lsp-mode 'lsp-ui 'company-lsp)
-                                                                          (list)))
+         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper 'lsp-mode 'lsp-ui 'company-lsp)
+                                             (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
 
@@ -78,7 +78,7 @@
             (message "Clearing out the background colour")
             (set-face-background 'default "unspecified-bg" frame)))
 
-        (tool-bar-mode -1)))
+      (tool-bar-mode -1)))
 
   (on-frame-open (selected-frame))
   (add-hook 'after-make-frame-functions 'on-frame-open)
@@ -92,7 +92,7 @@
   ;; enable alchemist
   (if (package-installed-p 'alchemist)
       (if (not (string-equal "windows-nt" (symbol-name system-type)))
-	  (alchemist-mode)))
+          (alchemist-mode)))
 
   ;; load powerline
   (message "Loading powerline")
@@ -354,47 +354,61 @@
         (require 'flycheck-elixir)
         (add-hook 'elixir-mode-hook 'flycheck-mode)
 
-        ;; configure vue-mode
-        (require 'vue-mode)
-        ;;(add-to-list 'vue-mode-hook #'smartparens-mode)
-
         ;; add in LSP
         (require 'lsp-mode)
         (require 'lsp-ui)
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-        ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
         (when (file-exists-p "/usr/bin/vls")
           (progn
-            ;; use a patched version of lsp-vue until the official one is fixed
-            (load-file "~/.emacs.d/lsp-vue.el")
-            (require 'lsp-vue)
-            (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
-            (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+            (defconst lsp-vue--get-root (lsp-make-traverser #'(lambda (dir)
+                                                                (directory-files dir nil "package.json"))))
 
-            ;; (add-hook 'vue-mode-hook #'lsp-vue-mmm-enable)
-            ;; (defconst lsp-vue--get-root (lsp-make-traverser #'(lambda (dir)
-            ;;                                                     (directory-files dir nil "package.json"))))
+            (lsp-define-stdio-client lsp-vue "vue"
+                                     lsp-vue--get-root '("/usr/bin/vls"))
 
-            ;; (lsp-define-stdio-client lsp-vue "vue"
-            ;;  lsp-vue--get-root '("/usr/bin/vls"))
+            (defun lsp-vue--vetur-configuration (features)
+              "Get all features configuration."
+              (cl-labels ((dotted-p (x) (not (consp (cdr x))))
+                          (walklist
+                              (l table)
+                            (let (
+                                  (key (car l))
+                                  (value (cdr l))
+                                  (localtable (or table (make-hash-table :test 'equal))))
 
-            ;;  (defun lsp-vue--set-configuration ()
-            ;;  "Send project config to lsp-server"
-            ;;  (lsp--set-configuration (lsp-vue--vetur-configuration '(vetur html))))
+                              (if (listp key)
+                                  (dolist (sublist l)
+                                    (walklist sublist localtable))
 
-            ;;  (add-hook 'lsp-after-initialize-hook 'lsp-vue--set-configuration)
+                                (progn
+                                  (puthash key (or (gethash key localtable) (make-hash-table :test 'equal)) localtable)
+                                  (if (not (dotted-p l))
+                                      (puthash key (walklist value (gethash key localtable)) localtable)
+                                    (puthash key value localtable))))
 
-            ;;  (defun lsp-vue-mmm-enable ()
-            ;;    "Enable lsp-vue for all major-modes supported by ‘vue-mode’."
-            ;;    (interactive)
-            ;;    (lsp-vue-enable)
-            ;;    (when (and lsp-enable-flycheck (featurep 'lsp-flycheck) (featurep 'vue-mode))
-            ;;      (require 'vue-mode)
-            ;;      (dolist (mode-settings vue-modes)
-            ;;        (lsp-flycheck-add-mode (plist-get mode-settings ':mode)))))
-             ))
+                              localtable)))
+                (let ((table (make-hash-table :test 'equal)))
+                  (dolist (feature features)
+                    (walklist
+                     (mapcar
+                      #'(lambda (form)
+                          (let* ((custom (first form))
+                                 (path (split-string (symbol-name custom) "\\.")))
+                            (append path (symbol-value custom))))
+                      (get feature 'custom-group)) table))
+                  table)))
 
+            (defun lsp-vue--set-configuration ()
+              "Send project config to lsp-server"
+              (lsp--set-configuration (lsp-vue--vetur-configuration '(vetur html))))
+
+            (add-hook 'lsp-after-initialize-hook 'lsp-vue--set-configuration)
+
+            (add-hook 'find-file-hook
+                      (lambda ()
+                        (when (string= (file-name-extension buffer-file-name) "vue")
+                          (lsp-vue-enable))))))
 
         (require 'company-lsp)
         (push 'company-lsp company-backends)
@@ -409,46 +423,46 @@
          '(magit-diff-removed ((((type tty)) (:foreground "red"))))
          '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
          '(magit-section-highlight ((((type tty)) nil)))))
-      (progn
-        ;; add flymake support for js
-        (message "Loading flymake-easy")
-        (require 'flymake-easy)
-        (require 'flymake-jslint)
-        (add-hook 'js-mode-hook 'flymake-jslint-load)
+    (progn
+      ;; add flymake support for js
+      (message "Loading flymake-easy")
+      (require 'flymake-easy)
+      (require 'flymake-jslint)
+      (add-hook 'js-mode-hook 'flymake-jslint-load)
 
-        ;; add flymake suppport for Erlang
-        (defconst flymake-erlang-err-line-patterns
-          '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
+      ;; add flymake suppport for Erlang
+      (defconst flymake-erlang-err-line-patterns
+        '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
 
-        (defun flymake-erlang-command (filename)
-          "Construct a command that flymake can use to check erlang source."
-          (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
+      (defun flymake-erlang-command (filename)
+        "Construct a command that flymake can use to check erlang source."
+        (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
 
-        (defun flymake-erlang-load ()
-          "Configure flymake mode to check the current buffer's erlang syntax."
-          (interactive)
-          (flymake-easy-load 'flymake-erlang-command
-                             flymake-erlang-err-line-patterns
-                             'inplace
-                             "erl"))
+      (defun flymake-erlang-load ()
+        "Configure flymake mode to check the current buffer's erlang syntax."
+        (interactive)
+        (flymake-easy-load 'flymake-erlang-command
+                           flymake-erlang-err-line-patterns
+                           'inplace
+                           "erl"))
 
-        (add-hook 'erlang-mode-hook 'flymake-erlang-load)
+      (add-hook 'erlang-mode-hook 'flymake-erlang-load)
 
-        ;; add flymake suppport for Coffeescript
-        (defconst flymake-coffeescript-err-line-patterns
-          '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
+      ;; add flymake suppport for Coffeescript
+      (defconst flymake-coffeescript-err-line-patterns
+        '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
 
-        (defun flymake-coffeescript-command (filename)
-          "Construct a command that flymake can use to check coffeescript source."
-          (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
+      (defun flymake-coffeescript-command (filename)
+        "Construct a command that flymake can use to check coffeescript source."
+        (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
 
-        (defun flymake-coffeescript-load ()
-          "Configure flymake mode to check the current buffer's coffeescript syntax."
-          (interactive)
-          (flymake-easy-load 'flymake-coffeescript-command
-                             flymake-coffeescript-err-line-patterns
-                             'inplace
-                             "coffee")))
+      (defun flymake-coffeescript-load ()
+        "Configure flymake mode to check the current buffer's coffeescript syntax."
+        (interactive)
+        (flymake-easy-load 'flymake-coffeescript-command
+                           flymake-coffeescript-err-line-patterns
+                           'inplace
+                           "coffee")))
 
     (add-hook 'coffee-mode-hook 'flymake-coffeescript-load))
 
