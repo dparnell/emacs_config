@@ -62,7 +62,8 @@
           (color-theme-solarized-dark))
       (progn
         (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
-        (load-theme 'solarized-dark t))))
+        (load-theme 'solarized-dark t)
+        (message "Reloaded theme"))))
 
   (load-my-theme)
 
@@ -359,6 +360,36 @@
         (require 'lsp-ui)
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
+        (when (file-exists-p "/usr/local/bin/javascript-typescript-stdio")
+	  (require 'lsp-mode)
+	  (require 'typescript-mode)
+
+	  (defconst lsp-javascript--get-root
+	    (lsp-make-traverser #'(lambda (dir)
+				    (directory-files dir nil "package.json"))))
+
+	  (defun lsp-javascript-typescript--render-string (str)
+	    (ignore-errors
+	      (with-temp-buffer
+		(typescript-mode)
+		(insert str)
+		(font-lock-ensure)
+		(buffer-string))))
+
+	  (defun lsp-javascript-typescript--initialize-client (client)
+	    (lsp-provide-marked-string-renderer
+	     client "typescript" 'lsp-javascript-typescript--render-string)
+	    (lsp-provide-marked-string-renderer
+	     client "javascript" 'lsp-javascript-typescript--render-string))
+
+	  (lsp-define-stdio-client lsp-javascript-typescript "javascript"
+				   lsp-javascript--get-root '("javascript-typescript-stdio")
+				   :ignore-messages '("readFile .*? requested by TypeScript but content not available")
+				   :initialize 'lsp-javascript-typescript--initialize-client)
+
+          (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+          (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable))
+
         (when (file-exists-p "/usr/bin/vls")
           (progn
             (defconst lsp-vue--get-root (lsp-make-traverser #'(lambda (dir)
@@ -409,9 +440,6 @@
                       (lambda ()
                         (when (string= (file-name-extension buffer-file-name) "vue")
                           (lsp-vue-enable))))))
-
-        (require 'company-lsp)
-        (push 'company-lsp company-backends)
 
         ;; set up magit colours
         (custom-set-faces
@@ -514,6 +542,11 @@
   (setq company-dabbrev-downcase 0)
   (defun setup-company-mode ()
     (global-company-mode)
+
+    (message "Adding company LSP")
+    (require 'company-lsp)
+    (push 'company-lsp company-backends)
+
     ;; fix company-mode css regex
     (defconst company-css-property-value-regexp
       "\\_<\\([[:alpha:]-]+\\):\\(?:[[:space:]]+\\)?\\([^{};]*\\_>\\|\\)\\="
