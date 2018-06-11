@@ -34,8 +34,8 @@
 (message "Loading required packages")
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode) (list)))
-         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper 'lsp-mode 'lsp-ui 'company-lsp)
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'lsp-java 'company-lsp) (list)))
+         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
                                              (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
@@ -360,34 +360,39 @@
         (require 'lsp-ui)
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
+        ;; add in LSP Java
+        (when (file-directory-p "~/.emacs.d/eclipse.jdt.ls/server/")
+          (require 'lsp-java)
+          (add-hook 'java-mode-hook #'lsp-java-enable))
+
         (when (file-exists-p "/usr/local/bin/javascript-typescript-stdio")
-	  (require 'lsp-mode)
-	  (require 'typescript-mode)
+          (require 'lsp-mode)
+          (require 'typescript-mode)
 
-	  (defconst lsp-javascript--get-root
-	    (lsp-make-traverser #'(lambda (dir)
-				    (directory-files dir nil "package.json"))))
+          (defconst lsp-javascript--get-root
+            (lsp-make-traverser #'(lambda (dir)
+                                    (directory-files dir nil "package.json"))))
 
-	  (defun lsp-javascript-typescript--render-string (str)
-	    (ignore-errors
-	      (with-temp-buffer
-		(typescript-mode)
-		(insert str)
-		(font-lock-ensure)
-		(buffer-string))))
+          (defun lsp-javascript-typescript--render-string (str)
+            (ignore-errors
+              (with-temp-buffer
+                (typescript-mode)
+                (insert str)
+                (font-lock-ensure)
+                (buffer-string))))
 
-	  (defun lsp-javascript-typescript--initialize-client (client)
-	    (lsp-provide-marked-string-renderer
-	     client "typescript" 'lsp-javascript-typescript--render-string)
-	    (lsp-provide-marked-string-renderer
-	     client "javascript" 'lsp-javascript-typescript--render-string))
+          (defun lsp-javascript-typescript--initialize-client (client)
+            (lsp-provide-marked-string-renderer
+             client "typescript" 'lsp-javascript-typescript--render-string)
+            (lsp-provide-marked-string-renderer
+             client "javascript" 'lsp-javascript-typescript--render-string))
 
-	  (lsp-define-stdio-client lsp-javascript-typescript "javascript"
-				   lsp-javascript--get-root '("javascript-typescript-stdio")
-				   :ignore-messages '("readFile .*? requested by TypeScript but content not available")
-				   :initialize 'lsp-javascript-typescript--initialize-client)
+          (lsp-define-stdio-client lsp-javascript-typescript "javascript"
+                                   lsp-javascript--get-root '("javascript-typescript-stdio")
+                                   :ignore-messages '("readFile .*? requested by TypeScript but content not available")
+                                   :initialize 'lsp-javascript-typescript--initialize-client)
 
-          (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+          ;; (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
           (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable))
 
         (when (file-exists-p "/usr/bin/vls")

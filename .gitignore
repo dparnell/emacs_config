@@ -1,4 +1,4 @@
-*.elc
+(*.elc
 *~
 nxhtml/etc/schema/xhtml-loader.rnc
 tramp
@@ -15,3 +15,5 @@ url
 flycheck-init.el
 /recentf
 /.last-package-update-day
+/workspace
+/eclipse.jdt.ls
