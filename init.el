@@ -360,9 +360,16 @@
         (require 'lsp-ui)
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
+        (setq lsp-ui-sideline-update-mode 'point)
+
         ;; add in LSP Java
         (when (file-directory-p "~/.emacs.d/eclipse.jdt.ls/server/")
           (require 'lsp-java)
+
+          ;; don't try to be helpful!
+          (setq lsp-java-save-action-organize-imports nil)
+          (setq lsp-java-organize-imports nil)
+
           (add-hook 'java-mode-hook #'lsp-java-enable))
 
         (when (file-exists-p "/usr/local/bin/javascript-typescript-stdio")
