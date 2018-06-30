@@ -1,4 +1,4 @@
-(*.elc
+*.elc
 *~
 nxhtml/etc/schema/xhtml-loader.rnc
 tramp
