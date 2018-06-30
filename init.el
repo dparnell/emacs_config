@@ -34,9 +34,9 @@
 (message "Loading required packages")
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'ghub 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode) (list)))
-         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint 'swiper)
-                                                                          (list)))
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'lsp-java 'company-lsp) (list)))
+         (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
+                                             (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
 
@@ -62,7 +62,8 @@
           (color-theme-solarized-dark))
       (progn
         (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
-        (load-theme 'solarized-dark t))))
+        (load-theme 'solarized-dark t)
+        (message "Reloaded theme"))))
 
   (load-my-theme)
 
@@ -78,7 +79,7 @@
             (message "Clearing out the background colour")
             (set-face-background 'default "unspecified-bg" frame)))
 
-        (tool-bar-mode -1)))
+      (tool-bar-mode -1)))
 
   (on-frame-open (selected-frame))
   (add-hook 'after-make-frame-functions 'on-frame-open)
@@ -92,7 +93,7 @@
   ;; enable alchemist
   (if (package-installed-p 'alchemist)
       (if (not (string-equal "windows-nt" (symbol-name system-type)))
-	  (alchemist-mode)))
+          (alchemist-mode)))
 
   ;; load powerline
   (message "Loading powerline")
@@ -129,14 +130,14 @@
   (message "Loading debug support")
   (load-file "~/.emacs.d/cl-lib.el")
 
-                                        ;(if (not (string-equal "windows-nt" (symbol-name system-type)))
-                                        ;  (progn
-                                        ;    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
-                                        ;    (if (not (equal "" rdebug-emacs-path))
-                                        ; (progn
-                                        ;   (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
-                                        ;   (require 'rdebug)
-                                        ;   (require 'rdebug-remote)))))
+  ;;(if (not (string-equal "windows-nt" (symbol-name system-type)))
+  ;;  (progn
+  ;;    (setq rdebug-emacs-path (shell-command-to-string "which ruby > /dev/null && ruby -e \"puts File.join(File.dirname(File.dirname( Gem.bin_path('debugger', 'rdebug'))), 'emacs') rescue ''\""))
+  ;;    (if (not (equal "" rdebug-emacs-path))
+  ;; (progn
+  ;;   (setq load-path (append load-path (list (substring rdebug-emacs-path 0 -1))))
+  ;;   (require 'rdebug)
+  ;;   (require 'rdebug-remote)))))
 
   ;; Use spaces instead of TABs
   (setq indent-tabs-mode nil)
@@ -292,6 +293,19 @@
     (indent-region (point-min) (point-max) nil)
     (untabify (point-min) (point-max)))
 
+  (defun rename-file-and-buffer ()
+  "Rename the current buffer and file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer is not visiting a file!")
+      (let ((new-name (read-file-name "New name: " filename)))
+        (cond
+         ((vc-backend filename) (vc-rename-file filename new-name))
+         (t
+          (rename-file filename new-name t)
+          (set-visited-file-name new-name t t)))))))
+
   ;; circe
   (message "Loading circe")
   (autoload 'circe "circe" "Connect to an IRC server" t)
@@ -354,6 +368,104 @@
         (require 'flycheck-elixir)
         (add-hook 'elixir-mode-hook 'flycheck-mode)
 
+        ;; add in LSP
+        (require 'lsp-mode)
+        (require 'lsp-ui)
+        (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+        (setq lsp-ui-sideline-update-mode 'point)
+
+        ;; add in LSP Java
+        (when (file-directory-p "~/.emacs.d/eclipse.jdt.ls/server/")
+          (require 'lsp-java)
+
+          ;; don't try to be helpful!
+          (setq lsp-java-save-action-organize-imports nil)
+          (setq lsp-java-organize-imports nil)
+
+          (add-hook 'java-mode-hook #'lsp-java-enable))
+
+        (when (or (file-exists-p "/usr/local/bin/javascript-typescript-stdio") (file-exists-p "/usr/bin/javascript-typescript-stdio"))
+          (require 'lsp-mode)
+          (require 'typescript-mode)
+
+          (defconst lsp-javascript--get-root
+            (lsp-make-traverser #'(lambda (dir)
+                                    (directory-files dir nil "package.json"))))
+
+          (defun lsp-javascript-typescript--render-string (str)
+            (ignore-errors
+              (with-temp-buffer
+                (typescript-mode)
+                (insert str)
+                (font-lock-ensure)
+                (buffer-string))))
+
+          (defun lsp-javascript-typescript--initialize-client (client)
+            (lsp-provide-marked-string-renderer
+             client "typescript" 'lsp-javascript-typescript--render-string)
+            (lsp-provide-marked-string-renderer
+             client "javascript" 'lsp-javascript-typescript--render-string))
+
+          (lsp-define-stdio-client lsp-javascript-typescript "javascript"
+                                   lsp-javascript--get-root '("javascript-typescript-stdio")
+                                   :ignore-messages '("readFile .*? requested by TypeScript but content not available")
+                                   :initialize 'lsp-javascript-typescript--initialize-client)
+
+          ;; (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+          (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable))
+
+        (when (file-exists-p "/usr/bin/vls")
+          (progn
+            (defconst lsp-vue--get-root (lsp-make-traverser #'(lambda (dir)
+                                                                (directory-files dir nil "package.json"))))
+
+            (lsp-define-stdio-client lsp-vue "vue"
+                                     lsp-vue--get-root '("/usr/bin/vls"))
+
+            (defun lsp-vue--vetur-configuration (features)
+              "Get all features configuration."
+              (cl-labels ((dotted-p (x) (not (consp (cdr x))))
+                          (walklist
+                              (l table)
+                            (let (
+                                  (key (car l))
+                                  (value (cdr l))
+                                  (localtable (or table (make-hash-table :test 'equal))))
+
+                              (if (listp key)
+                                  (dolist (sublist l)
+                                    (walklist sublist localtable))
+
+                                (progn
+                                  (puthash key (or (gethash key localtable) (make-hash-table :test 'equal)) localtable)
+                                  (if (not (dotted-p l))
+                                      (puthash key (walklist value (gethash key localtable)) localtable)
+                                    (puthash key value localtable))))
+
+                              localtable)))
+                (let ((table (make-hash-table :test 'equal)))
+                  (dolist (feature features)
+                    (walklist
+                     (mapcar
+                      #'(lambda (form)
+                          (let* ((custom (first form))
+                                 (path (split-string (symbol-name custom) "\\.")))
+                            (append path (symbol-value custom))))
+                      (get feature 'custom-group)) table))
+                  table)))
+
+            (defun lsp-vue--set-configuration ()
+              "Send project config to lsp-server"
+              (lsp--set-configuration (lsp-vue--vetur-configuration '(vetur html))))
+
+            (add-hook 'lsp-after-initialize-hook 'lsp-vue--set-configuration)
+
+            (add-hook 'find-file-hook
+                      (lambda ()
+                        (when (string= (file-name-extension buffer-file-name) "vue")
+                          (lsp-vue-enable))))))
+
         ;; set up magit colours
         (custom-set-faces
          ;; other faces
@@ -364,46 +476,46 @@
          '(magit-diff-removed ((((type tty)) (:foreground "red"))))
          '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
          '(magit-section-highlight ((((type tty)) nil)))))
-      (progn
-        ;; add flymake support for js
-        (message "Loading flymake-easy")
-        (require 'flymake-easy)
-        (require 'flymake-jslint)
-        (add-hook 'js-mode-hook 'flymake-jslint-load)
+    (progn
+      ;; add flymake support for js
+      (message "Loading flymake-easy")
+      (require 'flymake-easy)
+      (require 'flymake-jslint)
+      (add-hook 'js-mode-hook 'flymake-jslint-load)
 
-        ;; add flymake suppport for Erlang
-        (defconst flymake-erlang-err-line-patterns
-          '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
+      ;; add flymake suppport for Erlang
+      (defconst flymake-erlang-err-line-patterns
+        '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
 
-        (defun flymake-erlang-command (filename)
-          "Construct a command that flymake can use to check erlang source."
-          (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
+      (defun flymake-erlang-command (filename)
+        "Construct a command that flymake can use to check erlang source."
+        (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
 
-        (defun flymake-erlang-load ()
-          "Configure flymake mode to check the current buffer's erlang syntax."
-          (interactive)
-          (flymake-easy-load 'flymake-erlang-command
-                             flymake-erlang-err-line-patterns
-                             'inplace
-                             "erl"))
+      (defun flymake-erlang-load ()
+        "Configure flymake mode to check the current buffer's erlang syntax."
+        (interactive)
+        (flymake-easy-load 'flymake-erlang-command
+                           flymake-erlang-err-line-patterns
+                           'inplace
+                           "erl"))
 
-        (add-hook 'erlang-mode-hook 'flymake-erlang-load)
+      (add-hook 'erlang-mode-hook 'flymake-erlang-load)
 
-        ;; add flymake suppport for Coffeescript
-        (defconst flymake-coffeescript-err-line-patterns
-          '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
+      ;; add flymake suppport for Coffeescript
+      (defconst flymake-coffeescript-err-line-patterns
+        '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
 
-        (defun flymake-coffeescript-command (filename)
-          "Construct a command that flymake can use to check coffeescript source."
-          (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
+      (defun flymake-coffeescript-command (filename)
+        "Construct a command that flymake can use to check coffeescript source."
+        (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
 
-        (defun flymake-coffeescript-load ()
-          "Configure flymake mode to check the current buffer's coffeescript syntax."
-          (interactive)
-          (flymake-easy-load 'flymake-coffeescript-command
-                             flymake-coffeescript-err-line-patterns
-                             'inplace
-                             "coffee")))
+      (defun flymake-coffeescript-load ()
+        "Configure flymake mode to check the current buffer's coffeescript syntax."
+        (interactive)
+        (flymake-easy-load 'flymake-coffeescript-command
+                           flymake-coffeescript-err-line-patterns
+                           'inplace
+                           "coffee")))
 
     (add-hook 'coffee-mode-hook 'flymake-coffeescript-load))
 
@@ -455,6 +567,11 @@
   (setq company-dabbrev-downcase 0)
   (defun setup-company-mode ()
     (global-company-mode)
+
+    (message "Adding company LSP")
+    (require 'company-lsp)
+    (push 'company-lsp company-backends)
+
     ;; fix company-mode css regex
     (defconst company-css-property-value-regexp
       "\\_<\\([[:alpha:]-]+\\):\\(?:[[:space:]]+\\)?\\([^{};]*\\_>\\|\\)\\="
@@ -486,3 +603,4 @@
     (load custom-file)))
 
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)

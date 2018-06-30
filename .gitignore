@@ -15,3 +15,6 @@ url
 flycheck-init.el
 /recentf
 /.last-package-update-day
+/workspace
+/eclipse.jdt.ls
+/#recentf#
