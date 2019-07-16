@@ -20,3 +20,4 @@ flycheck-init.el
 /#recentf#
 /transient
 .lsp-session-*
+/lsp-elixir-project-settings.el

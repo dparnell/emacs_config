@@ -31,10 +31,12 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
+(setq auto-package-update-delete-old-versions t)
+
 (message "Loading required packages")
 (package-initialize)
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'alchemist 'auto-package-update 'cider 'magit 'flycheck 'flycheck-elixir 'flycheck-clojure 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp) (list)))
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'lsp-elixir) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
                                              (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
@@ -89,11 +91,6 @@
       (progn
         (global-set-key "\C-s" 'swiper)
         (ivy-mode)))
-
-  ;; enable alchemist
-  (if (package-installed-p 'alchemist)
-      (if (not (string-equal "windows-nt" (symbol-name system-type)))
-          (alchemist-mode)))
 
   ;; load powerline
   (message "Loading powerline")
@@ -363,10 +360,7 @@
 
   (if is-emacs-24-4-or-greater
       (progn
-        (global-flycheck-mode)
-        ;; add in Flycheck stuff
-        (require 'flycheck-elixir)
-        (add-hook 'elixir-mode-hook 'flycheck-mode)
+        ;; (global-flycheck-mode)
 
         ;; add in LSP
         (require 'lsp)
@@ -376,6 +370,9 @@
         (require 'lsp-mode)
         (require 'lsp-ui)
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+        ;; (require 'lsp-elixir)
+        (add-hook 'elixir-mode-hook #'lsp)
 
         (setq lsp-ui-sideline-update-mode 'point)
 
