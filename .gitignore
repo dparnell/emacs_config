@@ -18,3 +18,5 @@ flycheck-init.el
 /workspace
 /eclipse.jdt.ls
 /#recentf#
+/transient
+.lsp-session-*
