@@ -33,8 +33,18 @@
 
 (setq auto-package-update-delete-old-versions t)
 
+
 (message "Loading required packages")
 (package-initialize)
+
+(if (not (package-installed-p 'gnu-elpa-keyring-update))
+    (progn
+      (message "Installing new elpa keyring")
+      (setf package-check-signature nil)
+      (package-refresh-contents)
+      (package-install 'gnu-elpa-keyring-update)
+      (setf package-check-signature t)))
+
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'lsp-elixir) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
