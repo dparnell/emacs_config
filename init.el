@@ -405,7 +405,7 @@
              client "javascript" 'lsp-javascript-typescript--render-string))
 
           ;; (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
-          (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable))
+          (add-hook 'typescript-mode-hook #'lsp))
 
         (when (file-exists-p "/usr/bin/vls")
           (progn
