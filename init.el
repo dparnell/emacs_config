@@ -579,22 +579,11 @@
   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-  ;; load any local settings
-  (when (file-exists-p "~/.emacs.d/local-settings.el")
-    (message "Loading local settings")
-    (load-file "~/.emacs.d/local-settings.el"))
-
-  ;; finally load any customizations
-  (setq custom-file "~/.emacs.d/custom.el")
-  (when (file-exists-p "~/.emacs.d/custom.el")
-    (message "Loading custom settings")
-    (load custom-file))
-
   ;; Fira Code font support
   (if (member "Fira Code" (font-family-list))
       (progn
         ;; use the fira code font
-        (set-face-attribute 'default nil :family "Fira Code" :height 150)
+        (set-face-attribute 'default nil :family "Fira Code" :height 100)
 
         (defun fira-code-mode--make-alist (list)
           "Generate prettify-symbols alist from LIST."
@@ -653,7 +642,18 @@
           "Setup Fira Code Symbols"
           (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol"))
 
-        (add-hook 'prog-mode-hook #'fira-code-mode))))
+        (add-hook 'prog-mode-hook #'fira-code-mode)))
+
+    ;; load any local settings
+  (when (file-exists-p "~/.emacs.d/local-settings.el")
+    (message "Loading local settings")
+    (load-file "~/.emacs.d/local-settings.el"))
+
+  ;; finally load any customizations
+  (setq custom-file "~/.emacs.d/custom.el")
+  (when (file-exists-p "~/.emacs.d/custom.el")
+    (message "Loading custom settings")
+    (load custom-file)))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
