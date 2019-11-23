@@ -386,7 +386,7 @@
 
         (setq lsp-ui-sideline-update-mode 'point)
 
-        (when (or (file-exists-p "/usr/local/bin/javascript-typescript-stdio") (file-exists-p "/usr/bin/javascript-typescript-stdio"))
+        (when (or (file-exists-p "/usr/local/bin/javascript-typescript-stdio") (file-exists-p "/usr/bin/javascript-typescript-stdio") (file-exists-p (expand-file-name "~/.yarn/bin/javascript-typescript-stdio")))
           (require 'lsp-mode)
           (require 'typescript-mode)
 
