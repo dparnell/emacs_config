@@ -21,3 +21,4 @@ flycheck-init.el
 /transient
 .lsp-session-*
 /lsp-elixir-project-settings.el
+emojis
