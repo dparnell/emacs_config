@@ -49,7 +49,7 @@
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'lsp-elixir) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
                                              (list)))
-         (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'ecb 'markdown-mode 'php-mode 'typescript-mode))
+         (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
 
     (if to-install
@@ -286,10 +286,6 @@
   ;; PHP support
   (message "Loading php-mode")
   (require 'php-mode)
-
-  ;; ecb
-  (message "Loading ecb")
-  (require 'ecb)
 
   ;; reformat the current file
   ;; stolen from here: http://emacsblog.org/2007/01/17/indent-whole-buffer/
