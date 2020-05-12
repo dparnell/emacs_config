@@ -17,6 +17,7 @@
 (global-set-key (kbd "M-b <left>") 'windmove-left)
 (global-set-key (kbd "M-b <right>") 'windmove-right)
 
+(setq comp-deferred-compilation 1)
 ;; recent files
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
