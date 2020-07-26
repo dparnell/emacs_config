@@ -381,8 +381,8 @@
         ;; (require 'lsp-elixir)
         (add-hook 'elixir-mode-hook #'lsp)
         ;; fix a problem with indenting
-        (if (not (alist-get 'elixir-mode lsp--formatting-indent-alist))
-            (add-to-list 'lsp--formatting-indent-alist '(elixir-mode . erlang-indent-level)))
+        ;; (if (not (alist-get 'elixir-mode lsp--formatting-indent-alist))
+        ;;        (add-to-list 'lsp--formatting-indent-alist '(elixir-mode . erlang-indent-level)))
 
         (setq lsp-ui-sideline-update-mode 'point)
 
