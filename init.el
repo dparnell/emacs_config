@@ -47,7 +47,7 @@
       (setf package-check-signature t)))
 
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
-  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'lsp-elixir) (list)))
+  (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'quelpa 'quelpa-use-package) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
                                              (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'markdown-mode 'php-mode 'typescript-mode))
@@ -371,7 +371,6 @@
 
         ;; add in LSP
         (require 'lsp)
-        (require 'lsp-clients)
         (add-hook 'js2-mode-hook #'lsp)
 
         (require 'lsp-mode)
@@ -379,7 +378,7 @@
         (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
         ;; (require 'lsp-elixir)
-        (add-hook 'elixir-mode-hook #'lsp)
+        ;; (add-hook 'elixir-mode-hook #'lsp)
         ;; fix a problem with indenting
         ;; (if (not (alist-get 'elixir-mode lsp--formatting-indent-alist))
         ;;        (add-to-list 'lsp--formatting-indent-alist '(elixir-mode . erlang-indent-level)))
