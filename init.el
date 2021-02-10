@@ -1,4 +1,4 @@
-; Set up the environment path
+                                        ; Set up the environment path
 
 (if (string-equal "darwin" (symbol-name system-type))
     (progn
@@ -49,7 +49,7 @@
 (let ((is-emacs-24-4-or-greater (or (> emacs-major-version 24) (and (= emacs-major-version 24) (> emacs-minor-version 3)))))
   (let* ((packages-for-emacs-24-4-or-greater (if is-emacs-24-4-or-greater (list 'auto-package-update 'cider 'magit 'flycheck 'flycheck-clojure 'elixir-mode 'scala-mode 'clojure-mode 'swiper 'lsp-mode 'lsp-ui 'company-lsp 'quelpa 'quelpa-use-package) (list)))
          (packages-for-emacs-24-or-greater (if (> emacs-major-version 23) (list 'coffee-mode 'company 'yasnippet 'flymake-easy 'flymake-jslint)
-                                             (list)))
+                                               (list)))
          (common-packages (list 'iedit 'wgrep 'web-mode 'scss-mode 'yaml-mode 'json-mode 'js2-mode 'slime 'circe 'dockerfile-mode 'feature-mode 'markdown-mode 'php-mode 'typescript-mode))
          (to-install (delq nil (mapcar (lambda (x) (if (package-installed-p x) nil x)) (delq nil (append common-packages packages-for-emacs-24-or-greater packages-for-emacs-24-4-or-greater))))))
 
@@ -59,7 +59,7 @@
           (message "There are missing packages: %s" to-install)
           (package-refresh-contents)
           (mapcar (lambda (x) (message "Installing package %s" (symbol-name x)) (package-install x)) to-install))
-      (message "All packaged are already installed")))
+        (message "All packaged are already installed")))
 
   ;; emacs22 setup
   (if (< emacs-major-version 23)
@@ -73,10 +73,10 @@
           (setq load-path (append (append load-path '("~/.emacs.d/color-theme")) '("~/.emacs.d/emacs-color-theme-solarized")))
           (require 'color-theme-solarized)
           (color-theme-solarized-dark))
-      (progn
-        (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
-        (load-theme 'solarized-dark t)
-        (message "Reloaded theme"))))
+        (progn
+          (setq custom-theme-load-path (append custom-theme-load-path '("~/.emacs.d/emacs-color-theme-solarized")))
+          (load-theme 'solarized-dark t)
+          (message "Reloaded theme"))))
 
   (load-my-theme)
 
@@ -88,11 +88,11 @@
             (progn
               (message "Reloading theme")
               (run-with-idle-timer 1 nil 'load-my-theme))
-          (progn
-            (message "Clearing out the background colour")
-            (set-face-background 'default "unspecified-bg" frame)))
+            (progn
+              (message "Clearing out the background colour")
+              (set-face-background 'default "unspecified-bg" frame)))
 
-      (tool-bar-mode -1)))
+        (tool-bar-mode -1)))
 
   (on-frame-open (selected-frame))
   (add-hook 'after-make-frame-functions 'on-frame-open)
@@ -187,9 +187,9 @@
           (setq load-path (cons path load-path))
           (load "scala-mode-auto.el")
           (require 'scala-mode)))
-    (progn
-      (message "Loading scala-mode")
-      (require 'scala-mode)))
+      (progn
+        (message "Loading scala-mode")
+        (require 'scala-mode)))
 
   (defun scala-turnoff-indent-tabs-mode ()
     (setq indent-tabs-mode nil))
@@ -298,17 +298,17 @@
     (untabify (point-min) (point-max)))
 
   (defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (message "Buffer is not visiting a file!")
-      (let ((new-name (read-file-name "New name: " filename)))
-        (cond
-         ((vc-backend filename) (vc-rename-file filename new-name))
-         (t
-          (rename-file filename new-name t)
-          (set-visited-file-name new-name t t)))))))
+    "Rename the current buffer and file it is visiting."
+    (interactive)
+    (let ((filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+          (message "Buffer is not visiting a file!")
+          (let ((new-name (read-file-name "New name: " filename)))
+            (cond
+              ((vc-backend filename) (vc-rename-file filename new-name))
+              (t
+               (rename-file filename new-name t)
+               (set-visited-file-name new-name t t)))))))
 
   ;; circe
   (message "Loading circe")
@@ -328,9 +328,9 @@
   (setq lui-max-buffer-size 30000)
 
   (eval-after-load "circe"
-    '(progn
-      (require 'lui-irc-colors)
-      (add-to-list 'lui-pre-output-hook 'lui-irc-colors)))
+                   '(progn
+                     (require 'lui-irc-colors)
+                     (add-to-list 'lui-pre-output-hook 'lui-irc-colors)))
 
   (defun irc ()
     "Connect to IRC."
@@ -391,11 +391,11 @@
 
           (defun lsp-javascript-typescript--render-string (str)
             (ignore-errors
-              (with-temp-buffer
-                (typescript-mode)
-                (insert str)
-                (font-lock-ensure)
-                (buffer-string))))
+             (with-temp-buffer
+                 (typescript-mode)
+               (insert str)
+               (font-lock-ensure)
+               (buffer-string))))
 
           (defun lsp-javascript-typescript--initialize-client (client)
             (lsp-provide-marked-string-renderer
@@ -413,33 +413,33 @@
               "Get all features configuration."
               (cl-labels ((dotted-p (x) (not (consp (cdr x))))
                           (walklist
-                              (l table)
-                            (let (
-                                  (key (car l))
-                                  (value (cdr l))
-                                  (localtable (or table (make-hash-table :test 'equal))))
+                           (l table)
+                           (let (
+                                 (key (car l))
+                                 (value (cdr l))
+                                 (localtable (or table (make-hash-table :test 'equal))))
 
-                              (if (listp key)
-                                  (dolist (sublist l)
-                                    (walklist sublist localtable))
+                             (if (listp key)
+                                 (dolist (sublist l)
+                                   (walklist sublist localtable))
 
-                                (progn
-                                  (puthash key (or (gethash key localtable) (make-hash-table :test 'equal)) localtable)
-                                  (if (not (dotted-p l))
-                                      (puthash key (walklist value (gethash key localtable)) localtable)
-                                    (puthash key value localtable))))
+                                 (progn
+                                   (puthash key (or (gethash key localtable) (make-hash-table :test 'equal)) localtable)
+                                   (if (not (dotted-p l))
+                                       (puthash key (walklist value (gethash key localtable)) localtable)
+                                       (puthash key value localtable))))
 
-                              localtable)))
-                (let ((table (make-hash-table :test 'equal)))
-                  (dolist (feature features)
-                    (walklist
-                     (mapcar
-                      #'(lambda (form)
-                          (let* ((custom (first form))
-                                 (path (split-string (symbol-name custom) "\\.")))
-                            (append path (symbol-value custom))))
-                      (get feature 'custom-group)) table))
-                  table)))
+                             localtable)))
+                         (let ((table (make-hash-table :test 'equal)))
+                           (dolist (feature features)
+                             (walklist
+                              (mapcar
+                               #'(lambda (form)
+                                   (let* ((custom (first form))
+                                          (path (split-string (symbol-name custom) "\\.")))
+                                     (append path (symbol-value custom))))
+                               (get feature 'custom-group)) table))
+                           table)))
 
             (defun lsp-vue--set-configuration ()
               "Send project config to lsp-server"
@@ -463,48 +463,48 @@
          '(magit-diff-removed ((((type tty)) (:foreground "red"))))
          '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
          '(magit-section-highlight ((((type tty)) nil)))))
-    (progn
-      ;; add flymake support for js
-      (message "Loading flymake-easy")
-      (require 'flymake-easy)
-      (require 'flymake-jslint)
-      (add-hook 'js-mode-hook 'flymake-jslint-load)
+      (progn
+        ;; add flymake support for js
+        (message "Loading flymake-easy")
+        (require 'flymake-easy)
+        (require 'flymake-jslint)
+        (add-hook 'js-mode-hook 'flymake-jslint-load)
 
-      ;; add flymake suppport for Erlang
-      (defconst flymake-erlang-err-line-patterns
-        '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
+        ;; add flymake suppport for Erlang
+        (defconst flymake-erlang-err-line-patterns
+          '(("^\\(.*\.erl\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3)))
 
-      (defun flymake-erlang-command (filename)
-        "Construct a command that flymake can use to check erlang source."
-        (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
+        (defun flymake-erlang-command (filename)
+          "Construct a command that flymake can use to check erlang source."
+          (list (expand-file-name "~/.emacs.d/bin/check-erl") filename))
 
-      (defun flymake-erlang-load ()
-        "Configure flymake mode to check the current buffer's erlang syntax."
-        (interactive)
-        (flymake-easy-load 'flymake-erlang-command
-                           flymake-erlang-err-line-patterns
-                           'inplace
-                           "erl"))
+        (defun flymake-erlang-load ()
+          "Configure flymake mode to check the current buffer's erlang syntax."
+          (interactive)
+          (flymake-easy-load 'flymake-erlang-command
+                             flymake-erlang-err-line-patterns
+                             'inplace
+                             "erl"))
 
-      (add-hook 'erlang-mode-hook 'flymake-erlang-load)
+        (add-hook 'erlang-mode-hook 'flymake-erlang-load)
 
-      ;; add flymake suppport for Coffeescript
-      (defconst flymake-coffeescript-err-line-patterns
-        '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
+        ;; add flymake suppport for Coffeescript
+        (defconst flymake-coffeescript-err-line-patterns
+          '(("^\\(.*\.coffee\\),\\([0-9]+\\),.*,\\(.*\\)$" 1 2 nil 3)))
 
-      (defun flymake-coffeescript-command (filename)
-        "Construct a command that flymake can use to check coffeescript source."
-        (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
+        (defun flymake-coffeescript-command (filename)
+          "Construct a command that flymake can use to check coffeescript source."
+          (list (expand-file-name "~/.emacs.d/bin/check-coffeescript") filename))
 
-      (defun flymake-coffeescript-load ()
-        "Configure flymake mode to check the current buffer's coffeescript syntax."
-        (interactive)
-        (flymake-easy-load 'flymake-coffeescript-command
-                           flymake-coffeescript-err-line-patterns
-                           'inplace
-                           "coffee")))
+        (defun flymake-coffeescript-load ()
+          "Configure flymake mode to check the current buffer's coffeescript syntax."
+          (interactive)
+          (flymake-easy-load 'flymake-coffeescript-command
+                             flymake-coffeescript-err-line-patterns
+                             'inplace
+                             "coffee")))
 
-    (add-hook 'coffee-mode-hook 'flymake-coffeescript-load))
+      (add-hook 'coffee-mode-hook 'flymake-coffeescript-load))
 
   ;; load rainbow delimiters
   (message "Loading rainbow delimiters")
@@ -573,77 +573,97 @@
   ;; add markdown mode
   (message "Adding markdown mode")
   (autoload 'markdown-mode "markdown-mode"
-    "Major mode for editing Markdown files" t)
+            "Major mode for editing Markdown files" t)
   (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
   ;; Fira Code font support
-  (if (member "Fira Code" (font-family-list))
+  (if (or (> emacs-major-version 27) (and (= emacs-major-version 27) (>= emacs-minor-version 1)))
       (progn
-        ;; use the fira code font
-        (set-face-attribute 'default nil :family "Fira Code" :height 100)
+        (load "~/.emacs.d/ligature.el")
+        (use-package ligature
+                     :config
+                     (ligature-set-ligatures 't '("www"))
+                     (ligature-set-ligatures 'prog-mode '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+                                                          "{-" "[]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
+                                                          "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
+                                                          "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
+                                                          ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
+                                                          "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
+                                                          "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
+                                                          "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
+                                                          ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
+                                                          "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
+                                                          "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
+                                                          "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"))
+                     (global-ligature-mode t))
+        )
+      (if (member "Fira Code" (font-family-list))
+          (progn
+            ;; use the fira code font
+            (set-face-attribute 'default nil :family "Fira Code" :height 100)
 
-        (defun fira-code-mode--make-alist (list)
-          "Generate prettify-symbols alist from LIST."
-          (let ((idx -1))
-            (mapcar
-             (lambda (s)
-               (setq idx (1+ idx))
-               (let* ((code (+ #Xe100 idx))
-                      (width (string-width s))
-                      (prefix ())
-                      (suffix '(?\s (Br . Br)))
-                      (n 1))
-                 (while (< n width)
-                   (setq prefix (append prefix '(?\s (Br . Bl))))
-                   (setq n (1+ n)))
-                 (cons s (append prefix suffix (list (decode-char 'ucs code))))))
-             list)))
+            (defun fira-code-mode--make-alist (list)
+              "Generate prettify-symbols alist from LIST."
+              (let ((idx -1))
+                (mapcar
+                 (lambda (s)
+                   (setq idx (1+ idx))
+                   (let* ((code (+ #Xe100 idx))
+                          (width (string-width s))
+                          (prefix ())
+                          (suffix '(?\s (Br . Br)))
+                          (n 1))
+                     (while (< n width)
+                            (setq prefix (append prefix '(?\s (Br . Bl))))
+                            (setq n (1+ n)))
+                     (cons s (append prefix suffix (list (decode-char 'ucs code))))))
+                 list)))
 
-        (defconst fira-code-mode--ligatures
-          '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
-            "{-" "[]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
-            "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
-            "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
-            ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
-            "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
-            "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
-            "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
-            ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
-            "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
-            "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
-            "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"
-            "x" ":" "+" "+" "*"))
+            (defconst fira-code-mode--ligatures
+              '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+                "{-" "[]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
+                "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
+                "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
+                ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
+                "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
+                "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
+                "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
+                ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
+                "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
+                "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
+                "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"
+                "x" ":" "+" "+" "*"))
 
-        (defvar fira-code-mode--old-prettify-alist)
+            (defvar fira-code-mode--old-prettify-alist)
 
-        (defun fira-code-mode--enable ()
-          "Enable Fira Code ligatures in current buffer."
-          (setq-local fira-code-mode--old-prettify-alist prettify-symbols-alist)
-          (setq-local prettify-symbols-alist (append (fira-code-mode--make-alist fira-code-mode--ligatures) fira-code-mode--old-prettify-alist))
-          (prettify-symbols-mode t))
+            (defun fira-code-mode--enable ()
+              "Enable Fira Code ligatures in current buffer."
+              (setq-local fira-code-mode--old-prettify-alist prettify-symbols-alist)
+              (setq-local prettify-symbols-alist (append (fira-code-mode--make-alist fira-code-mode--ligatures) fira-code-mode--old-prettify-alist))
+              (prettify-symbols-mode t))
 
-        (defun fira-code-mode--disable ()
-          "Disable Fira Code ligatures in current buffer."
-          (setq-local prettify-symbols-alist fira-code-mode--old-prettify-alist)
-          (prettify-symbols-mode -1))
+            (defun fira-code-mode--disable ()
+              "Disable Fira Code ligatures in current buffer."
+              (setq-local prettify-symbols-alist fira-code-mode--old-prettify-alist)
+              (prettify-symbols-mode -1))
 
-        (define-minor-mode fira-code-mode
-            "Fira Code ligatures minor mode"
-          :lighter " Fira Code"
-          (setq-local prettify-symbols-unprettify-at-point 'right-edge)
-          (if fira-code-mode
-              (fira-code-mode--enable)
-            (fira-code-mode--disable)))
+            (define-minor-mode fira-code-mode
+              "Fira Code ligatures minor mode"
+              :lighter " Fira Code"
+              (setq-local prettify-symbols-unprettify-at-point 'right-edge)
+              (if fira-code-mode
+                  (fira-code-mode--enable)
+                  (fira-code-mode--disable)))
 
-        (defun fira-code-mode--setup ()
-          "Setup Fira Code Symbols"
-          (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol"))
+            (defun fira-code-mode--setup ()
+              "Setup Fira Code Symbols"
+              (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol"))
 
-        (add-hook 'prog-mode-hook #'fira-code-mode)))
+            (add-hook 'prog-mode-hook #'fira-code-mode))))
 
-    ;; load any local settings
+  ;; load any local settings
   (when (file-exists-p "~/.emacs.d/local-settings.el")
     (message "Loading local settings")
     (load-file "~/.emacs.d/local-settings.el"))
